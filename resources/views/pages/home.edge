@@ -1,5 +1,103 @@
 @layout({ title: 'Home Page' })
+  <div class="max-w-4xl mx-auto space-y-8">
+    {{-- Welcome Section --}}
+    <div class="bg-white mt-4 p-6 rounded-xl shadow">
+      <h1 class="text-2xl font-bold text-gray-900 mb-4">Welcome to the Cake City Leave Management Portal</h1>
+      <p class="text-gray-600">Manage your leave applications and track your leave balance efficiently.</p>
+    </div>
 
+    {{-- Leave Policies --}}
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Our Leave Policies</h2>
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {{-- Annual Leave --}}
+          <div class="border rounded-lg p-4">
+            <h3 class="font-medium text-gray-900">Annual Leave</h3>
+            <ul class="mt-2 space-y-1 text-sm text-gray-600">
+              <li>• 21 working days per year</li>
+              <li>• Accrual rate: 1.75 days per month</li>
+              <li>• Pro-rated for incomplete years</li>
+            </ul>
+          </div>
 
+          {{-- Sick Leave --}}
+          <div class="border rounded-lg p-4">
+            <h3 class="font-medium text-gray-900">Sick Leave</h3>
+            <ul class="mt-2 space-y-1 text-sm text-gray-600">
+              <li>• 14 calendar days per year</li>
+              <li>• First 7 days: Full pay</li>
+              <li>• Next 7 days: Half pay</li>
+            </ul>
+          </div>
 
+          {{-- Maternity Leave --}}
+          <div class="border rounded-lg p-4">
+            <h3 class="font-medium text-gray-900">Maternity Leave</h3>
+            <ul class="mt-2 space-y-1 text-sm text-gray-600">
+              <li>• 90 calendar days</li>
+              <li>• Full pay during leave period</li>
+            </ul>
+          </div>
+
+          {{-- Paternity Leave --}}
+          <div class="border rounded-lg p-4">
+            <h3 class="font-medium text-gray-900">Paternity Leave</h3>
+            <ul class="mt-2 space-y-1 text-sm text-gray-600">
+              <li>• 14 calendar days</li>
+              <li>• Full pay during leave period</li>
+            </ul>
+          </div>
+
+          {{-- Other Leaves --}}
+          <div class="border rounded-lg p-4">
+            <h3 class="font-medium text-gray-900">Other Leave Types</h3>
+            <ul class="mt-2 space-y-1 text-sm text-gray-600">
+              <li>• Public Holiday Compensation: 1 day off</li>
+              <li>• Compassionate Leave: Via annual leave</li>
+              <li>• Unpaid Leave: Subject to approval</li>
+            </ul>
+          </div>
+
+          {{-- Quick Info --}}
+          <div class="border rounded-lg p-4">
+            <h3 class="font-medium text-gray-900">Important Information</h3>
+            <ul class="mt-2 space-y-1 text-sm text-gray-600">
+              <li>• Submit applications at least 2 weeks in advance</li>
+              <li>• Medical certificate required for sick leave</li>
+              <li>• Leave is subject to approval</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{-- Quick Actions --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      @button({ href: route('leaves.create'), class: 'w-full' })
+        @!svg('ph:plus-circle', { class: 'size-5' })
+        Apply for Leave
+      @end
+
+      @button({ href: route('leaves.index'), variant: 'ghost', class: 'w-full' })
+        @!svg('ph:clock-clockwise', { class: 'size-5' })
+        View Applications
+      @end
+
+      @button({ href: '#', variant: 'ghost', class: 'w-full' })
+        @!svg('ph:calendar', { class: 'size-5' })
+        Leave Calendar
+      @end
+    </div>
+
+    {{-- Contact Information --}}
+    <div class="bg-white p-6 rounded-xl shadow">
+      <h2 class="text-xl font-semibold text-gray-900 mb-4">Need Help?</h2>
+      <p class="text-gray-600">Contact HR Department for any queries:</p>
+      <p class="text-gray-600 mt-2">
+        Email: hr@cakecity.com<br>
+        Extension: 123
+      </p>
+    </div>
+  </div>
 @end

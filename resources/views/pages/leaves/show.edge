@@ -3,32 +3,68 @@
     title: 'Leave Application Details',
     description: 'View your leave request details'
   })
-    <div class="space-y-4">
-      <div>
-        <h4 class="font-medium text-gray-900">Leave Type</h4>
-        <p class="mt-1 text-gray-600">{{ leave.type }}</p>
+    <div class="space-y-6 max-w-2xl">
+      {{-- Grid Layout for Details --}}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {{-- Leave Type --}}
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Leave Type</h4>
+          <p class="mt-2 text-base font-medium text-gray-900">{{ leave.type }}</p>
+        </div>
+
+        {{-- Status --}}
+        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Status</h4>
+          <div class="mt-2">
+            @if(leave.status === 'pending')
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                Pending
+              </span>
+            @elseif(leave.status === 'approved_by_dept_head')
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                Approved by Department Head
+              </span>
+            @elseif(leave.status === 'approved_by_hr')
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                Approved by HR
+              </span>
+            @elseif(leave.status === 'approved_by_ceo')
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                Fully Approved
+              </span>
+            @else
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                Rejected
+              </span>
+            @endif
+          </div>
+        </div>
       </div>
 
-      <div>
-        <h4 class="font-medium text-gray-900">Duration</h4>
-        <p class="mt-1 text-gray-600">
-          {{ leave.startDate.toFormat('dd LLL yyyy') }} - {{ leave.endDate.toFormat('dd LLL yyyy') }}
-          ({{ leave.days }} days)
-        </p>
+      {{-- Duration Details --}}
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Duration</h4>
+        <div class="mt-2 space-y-1">
+          <p class="text-base text-gray-900">
+            From: <span class="font-medium">{{ leave.startDate.toFormat('dd LLL yyyy') }}</span>
+          </p>
+          <p class="text-base text-gray-900">
+            To: <span class="font-medium">{{ leave.endDate.toFormat('dd LLL yyyy') }}</span>
+          </p>
+          <p class="text-sm text-gray-500">Total: {{ leave.days }} days</p>
+        </div>
       </div>
 
-      <div>
-        <h4 class="font-medium text-gray-900">Status</h4>
-        <p class="mt-1 text-gray-600">{{ leave.status }}</p>
+      {{-- Reason --}}
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Reason</h4>
+        <p class="mt-2 text-base text-gray-900">{{ leave.reason }}</p>
       </div>
 
-      <div>
-        <h4 class="font-medium text-gray-900">Reason</h4>
-        <p class="mt-1 text-gray-600">{{ leave.reason }}</p>
-      </div>
-
-      <div class="mt-6 flex justify-start">
+      {{-- Action Buttons --}}
+      <div class="pt-4 flex justify-start space-x-3 border-t">
         @button({ href: route('leaves.index'), variant: 'ghost' })
+          @!svg('ph:arrow-left', { class: 'size-4 mr-2' })
           Back to Leave Applications
         @end
       </div>

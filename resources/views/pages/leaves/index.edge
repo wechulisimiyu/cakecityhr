@@ -3,6 +3,91 @@
     title: 'Leave Applications',
     description: 'View and track your leave requests'
   })
+
+    <div class="mb-8">
+      <h3 class="text-lg font-medium text-gray-900 mb-4">
+        Leave Balance
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {{-- Annual Leave --}}
+        <div class="bg-white p-4 rounded-lg border border-gray-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Annual Leave
+              </p>
+              <p class="mt-1 text-2xl font-semibold text-gray-900">
+                {{ leaveBalance.annual ?? 21 }}
+              </p>
+            </div>
+            <div class="bg-green-100 p-1.5 rounded-full">
+              @!svg('ph:calendar', { class: 'size-5 text-green-600' })
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div
+                class="bg-green-600 h-2 rounded-full"
+                style="width: {{ ((21 - (leaveBalance.annual ?? 21)) / 21) * 100 }}%"
+              >
+              </div>
+            </div>
+            <p class="mt-1 text-xs text-gray-500">
+              {{ 21 - (leaveBalance.annual ?? 21) }} days used
+            </p>
+          </div>
+        </div>
+
+        {{-- Sick Leave --}}
+        <div class="bg-white p-4 rounded-lg border border-gray-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Sick Leave
+              </p>
+              <p class="mt-1 text-2xl font-semibold text-gray-900">
+                {{ leaveBalance.sick ?? 14 }}
+              </p>
+            </div>
+            <div class="bg-blue-100 p-1.5 rounded-full">
+              @!svg('ph:first-aid', { class: 'size-5 text-blue-600' })
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div
+                class="bg-blue-600 h-2 rounded-full"
+                style="width: {{ ((14 - (leaveBalance.sick ?? 14)) / 14) * 100 }}%"
+              >
+              </div>
+            </div>
+            <p class="mt-1 text-xs text-gray-500">
+              {{ 14 - (leaveBalance.sick ?? 14) }} days used
+            </p>
+          </div>
+        </div>
+
+        {{-- Other Leave Types --}}
+        <div class="bg-white p-4 rounded-lg border border-gray-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">
+                Other Leave Types
+              </p>
+              <p class="mt-1 text-sm text-gray-600">
+                • Maternity: 90 days<br />
+                • Paternity: 14 days<br />
+                • Compassionate: Via annual
+              </p>
+            </div>
+            <div class="bg-gray-100 p-1.5 rounded-full">
+              @!svg('ph:info', { class: 'size-5 text-gray-600' })
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="flex justify-end mb-4">
       @button({ href: route('leaves.create') })
         Apply Leave
@@ -11,22 +96,40 @@
 
     <table class="min-w-full divide-y divide-gray-200">
       <thead>
-        <tr>
-          <th>Type</th>
-          <th>Start Date</th>
-          <th>End Date</th>
-          <th>Status</th>
-          <th>Actions</th>
+        <tr class="bg-gray-50">
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Type
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Start Date
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            End Date
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Status
+          </th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            Actions
+          </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="bg-white divide-y divide-gray-200">
         @each(leave in leaves)
           <tr>
-            <td>{{ leave.type }}</td>
-            <td>{{ leave.startDate.toFormat('dd LLL yyyy') }}</td>
-            <td>{{ leave.endDate.toFormat('dd LLL yyyy') }}</td>
-            <td>{{ leave.status }}</td>
-            <td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ leave.type }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ leave.startDate.toFormat('dd LLL yyyy') }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ leave.endDate.toFormat('dd LLL yyyy') }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              {{ leave.status }}
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               @if(leave.status === 'pending')
                 @button({ href: route('leaves.show', [leave.id]), variant: 'ghost' })
                   View
