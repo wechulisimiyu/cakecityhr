@@ -1,0 +1,37 @@
+@layout({ title: 'Leave Details' })
+  @card({
+    title: 'Leave Application Details',
+    description: 'View your leave request details'
+  })
+    <div class="space-y-4">
+      <div>
+        <h4 class="font-medium text-gray-900">Leave Type</h4>
+        <p class="mt-1 text-gray-600">{{ leave.type }}</p>
+      </div>
+
+      <div>
+        <h4 class="font-medium text-gray-900">Duration</h4>
+        <p class="mt-1 text-gray-600">
+          {{ leave.startDate.toFormat('dd LLL yyyy') }} - {{ leave.endDate.toFormat('dd LLL yyyy') }}
+          ({{ leave.days }} days)
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-medium text-gray-900">Status</h4>
+        <p class="mt-1 text-gray-600">{{ leave.status }}</p>
+      </div>
+
+      <div>
+        <h4 class="font-medium text-gray-900">Reason</h4>
+        <p class="mt-1 text-gray-600">{{ leave.reason }}</p>
+      </div>
+
+      <div class="mt-6 flex justify-start">
+        @button({ href: route('leaves.index'), variant: 'ghost' })
+          Back to Leave Applications
+        @end
+      </div>
+    </div>
+  @end
+@end

@@ -1,0 +1,36 @@
+@layout({ title: 'Apply Leave' })
+  @card({
+    title: 'Leave Application', 
+    description: 'Submit your leave request'
+  })
+  @form({ action: route('leaves.store'), class: 'grid gap-y-4' })
+  @form.group({ label: 'Leave Type', name: 'type' })
+    @!form.select({ 
+      options: Object.entries(LeaveType ?? {}).map(([key]) => ({
+        label: key.charAt(0) + key.slice(1).toLowerCase(),
+        value: LeaveType[key]
+      })),
+      required: true
+    })
+  @end
+
+      @form.group({ label: 'Start Date', name: 'start_date' })
+        @!form.input({ type: 'date', required: true })
+      @end
+
+      @form.group({ label: 'End Date', name: 'end_date' })
+        @!form.input({ type: 'date', required: true })
+      @end
+
+      @form.group({ label: 'Reason', name: 'reason' })
+        @!form.textarea({ rows: 4, required: true })
+      @end
+
+      <div class="mt-3 flex justify-end gap-x-2">
+        @button({ type: 'submit' })
+          Submit Leave Request
+        @end
+      </div>
+    @end
+  @end
+@end

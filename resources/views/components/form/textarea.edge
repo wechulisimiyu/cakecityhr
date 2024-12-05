@@ -1,0 +1,18 @@
+@let($$props = Object.assign($context, $props))
+@let(id = $$props.id)
+@let(name = $$props.name)
+@let(value = (name ? old(name, $props.value) : $props.value) ?? '')
+@let(baseClasses = 'py-3 px-4 block w-full border border-gray-200 rounded text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none')
+
+<textarea
+  id="{{ id }}"
+  name="{{ name }}"
+  aria-describedby="{{ id }}-error"
+  {{ $props.except(['value', 'name']).merge({ class: baseClasses }).toAttrs() }}
+>{{ value }}</textarea>
+
+@if ($$props.errors)
+  <div class="absolute top-0 right-0 h-full flex items-center pointer-events-none pr-3">
+    @!svg('ph:exclamation-mark-fill', { class: 'size-5 text-red-500' })
+  </div>
+@endif

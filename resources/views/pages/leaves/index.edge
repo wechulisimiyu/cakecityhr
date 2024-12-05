@@ -1,0 +1,41 @@
+@layout({ title: 'My Leave Applications' })
+  @card({
+    title: 'Leave Applications',
+    description: 'View and track your leave requests'
+  })
+    <div class="flex justify-end mb-4">
+      @button({ href: route('leaves.create') })
+        Apply Leave
+      @end
+    </div>
+
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @each(leave in leaves)
+          <tr>
+            <td>{{ leave.type }}</td>
+            <td>{{ leave.startDate.toFormat('dd LLL yyyy') }}</td>
+            <td>{{ leave.endDate.toFormat('dd LLL yyyy') }}</td>
+            <td>{{ leave.status }}</td>
+            <td>
+              @if(leave.status === 'pending')
+                @button({ href: route('leaves.show', [leave.id]), variant: 'ghost' })
+                  View
+                @end
+              @endif
+            </td>
+          </tr>
+        @end
+      </tbody>
+    </table>
+  @end
+@end
