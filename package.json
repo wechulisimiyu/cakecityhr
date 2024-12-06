@@ -67,6 +67,7 @@
     "@vinejs/vine": "^2.1.0",
     "edge-iconify": "^2.0.1",
     "edge.js": "^6.2.0",
+    "fullcalendar": "^6.1.15",
     "luxon": "^3.5.0",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2"
