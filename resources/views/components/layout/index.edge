@@ -32,8 +32,18 @@
             class="flex flex-wrap items-center mb-5 text-sm md:mb-0 md:pl-8 md:ml-8 md:border-l md:border-gray-200"
           >
             <a href="{{ route('/') }}" class="mr-5 font-medium leading-6 text-gray-600 hover:text-gray-900">Home</a>
-            <a href="{{ route('/leave') }}" class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center">Apply for Leave</a>
-            {{-- <a href="#" class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center">Check your leave balances</a> --}}
+            <a
+              href="{{ route('/leave') }}"
+              class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center"
+            >Apply for Leave</a>
+            @if (await auth.check() && auth.user.roleId !== Role.EMPLOYEE)
+              <a
+                href="{{ route('/approvals') }}"
+                class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center"
+              >
+                Leave Approvals
+    </a>
+            @endif
           </nav>
         </div>
 

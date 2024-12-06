@@ -5,22 +5,25 @@ export default class extends BaseSeeder {
   async run() {
     const departments = [
       {
-        name: 'Information Technology',
-      },
-      {
-        name: 'Human Resources',
+        name: 'Food Production',
       },
       {
         name: 'Finance',
       },
       {
-        name: 'Operations',
+        name: 'Internal Controls',
       },
       {
         name: 'Marketing',
       },
       {
         name: 'Sales',
+      },
+      {
+        name: 'Transport and Logistics',
+      },
+      {
+        name: 'Procurement',
       },
     ]
 

@@ -1,7 +1,7 @@
 export enum LeaveStatus {
   PENDING = 'pending',
-  APPROVED_BY_DEPT_HEAD = 'approved_by_dept_head',
-  APPROVED_BY_HR = 'approved_by_hr',
-  APPROVED_BY_CEO = 'approved-by_ceo',
+  PENDING_HR = 'pending_hr',
+  PENDING_CEO = 'pending_ceo',
+  APPROVED = 'approved',
   REJECTED = 'rejected',
 }

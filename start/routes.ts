@@ -16,7 +16,8 @@ const RegisterController = () => import('#controllers/auth/register_controller')
 const ForgotPasswordController = () => import('#controllers/auth/forgot_password_controller')
 const ProfileController = () => import('#controllers/settings/profile_controller')
 const AccountController = () => import('#controllers/settings/account_controller')
-const LeavesController = () => import('#controllers/leaves_controller')
+const IndexLeaveController = () => import('#controllers/leaves/index_controller')
+const ApprovalsController = () => import('#controllers/leaves/approvals_controller')
 
 router.on('/').render('pages/home')
 
@@ -78,14 +79,24 @@ router
 //* LEAVES
 router
   .group(() => {
-    router.get('/leave', [LeavesController, 'index']).as('leaves.index')
-    router.get('/leave/create', [LeavesController, 'create']).as('leaves.create')
-    router.post('/leave', [LeavesController, 'store']).as('leaves.store')
-    router.get('/leave/:id', [LeavesController, 'show']).as('leaves.show')
+    // Static routes first
+    router.get('/leave', [IndexLeaveController, 'index']).as('leaves.index')
 
-    //approvals
-    // router.get('/leave/approvals', [LeavesController, 'approvals']).as('leaves.approvals')
-    // router.post('/leave/:id/approve', [LeavesController, 'approve']).as('leaves.approve')
-    // router.post('/leave/:id/reject', [LeavesController, 'reject']).as('leaves.reject')
+    router.get('/leave/create', [IndexLeaveController, 'create']).as('leaves.create')
+
+    router.get('/leave/calendar', [IndexLeaveController, 'calendar']).as('leaves.calendar')
+
+    // Approval routes (specific path)
+    router.group(() => {
+      router.get('/approvals', [ApprovalsController, 'index']).as('leaves.approvals')
+      router.post('/approvals/:id', [ApprovalsController, 'store']).as('leaves.approve')
+    })
+    // .use(middleware.role('DEPARTMENT_HEAD'))
+
+    // POST routes
+    router.post('/leave', [IndexLeaveController, 'store']).as('leaves.store')
+
+    // Dynamic parameter route last
+    router.get('/leave/:id', [IndexLeaveController, 'show']).as('leaves.show')
   })
-  .use(middleware.auth())
+  .use(middleware.auth()) // Apply auth to all leave routes

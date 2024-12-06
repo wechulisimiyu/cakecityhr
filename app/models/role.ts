@@ -18,4 +18,5 @@ export default class Role extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+  static DEPARTMENT_HEAD: number
 }

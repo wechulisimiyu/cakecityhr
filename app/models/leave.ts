@@ -1,10 +1,10 @@
+// app/models/leave.ts
 import { DateTime } from 'luxon'
-import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm'
-import { LeaveType } from '#enums/leave_type'
-import { LeaveStatus } from '#enums/leave_status'
-import type { BelongsTo } from '@adonisjs/lucid/types/relations'
-import Department from './department.js'
+import { BaseModel, column, belongsTo, hasMany } from '@adonisjs/lucid/orm'
+import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import User from './user.js'
+import Department from './department.js'
+import LeaveApproval from './leave_approval.js'
 
 export default class Leave extends BaseModel {
   @column({ isPrimary: true })
@@ -14,13 +14,13 @@ export default class Leave extends BaseModel {
   declare userId: number
 
   @column()
-  declare departmentId: number
+  declare departmentId: number | null
 
   @column()
-  declare type: LeaveType
+  declare type: string
 
   @column()
-  declare status: LeaveStatus
+  declare status: string
 
   @column.date()
   declare startDate: DateTime
@@ -32,34 +32,13 @@ export default class Leave extends BaseModel {
   declare days: number
 
   @column()
-  declare reason: string
+  declare reason: string | null
 
-  @column()
-  declare deptHeadId: number | null
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
 
-  @column.dateTime()
-  declare deptHeadApprovedAt: DateTime | null
-
-  @column()
-  declare deptHeadComments: string | null
-
-  @column()
-  declare hrId: number | null
-
-  @column.dateTime()
-  declare hrApprovedAt: DateTime | null
-
-  @column()
-  declare hrComments: string | null
-
-  @column()
-  declare ceoId: number | null
-
-  @column.dateTime()
-  declare ceoApprovedAt: DateTime | null
-
-  @column()
-  declare ceoComments: string | null
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
 
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
@@ -67,24 +46,6 @@ export default class Leave extends BaseModel {
   @belongsTo(() => Department)
   declare department: BelongsTo<typeof Department>
 
-  @belongsTo(() => User, {
-    foreignKey: 'deptHeadId',
-  })
-  declare deptHead: BelongsTo<typeof User>
-
-  @belongsTo(() => User, {
-    foreignKey: 'hrId',
-  })
-  declare hr: BelongsTo<typeof User>
-
-  @belongsTo(() => User, {
-    foreignKey: 'ceoId',
-  })
-  declare ceo: BelongsTo<typeof User>
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
+  @hasMany(() => LeaveApproval)
+  declare approvals: HasMany<typeof LeaveApproval>
 }

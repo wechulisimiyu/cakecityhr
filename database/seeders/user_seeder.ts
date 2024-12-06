@@ -22,22 +22,15 @@ export default class extends BaseSeeder {
       departmentId: 2, // HR Department
     })
 
-    // Create Finance Head
-    await User.create({
-      fullName: 'Mike Johnson',
-      email: 'finance@cakecity.com',
-      password: 'password123',
-      roleId: Role.HEAD_OF_FINANCE,
-      departmentId: 3, // Finance Department
-    })
-
-    // Create Department Heads
+    // Get all departments
     const departments = await Department.all()
 
+    // Create Department Heads and Employees
     for (const dept of departments) {
+      // Create department head
       const deptHead = await User.create({
         fullName: `${dept.name} Head`,
-        email: `head.${dept.name.toLowerCase().replace(' ', '')}@cakecity.com`,
+        email: `head.${dept.name.toLowerCase().replace(/\s+/g, '')}@cakecity.com`,
         password: 'password123',
         roleId: Role.DEPARTMENT_HEAD,
         departmentId: dept.id,
@@ -50,7 +43,7 @@ export default class extends BaseSeeder {
       for (let i = 1; i <= 2; i++) {
         await User.create({
           fullName: `Employee ${i} ${dept.name}`,
-          email: `employee${i}.${dept.name.toLowerCase().replace(' ', '')}@cakecity.com`,
+          email: `employee${i}.${dept.name.toLowerCase().replace(/\s+/g, '')}@cakecity.com`,
           password: 'password123',
           roleId: Role.EMPLOYEE,
           departmentId: dept.id,

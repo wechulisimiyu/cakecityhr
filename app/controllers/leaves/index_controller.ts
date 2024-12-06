@@ -3,6 +3,7 @@ import Leave from '#models/leave'
 import { LeaveStatus } from '#enums/leave_status'
 import { LeaveType } from '#enums/leave_type'
 import { DateTime } from 'luxon'
+import { Role } from '#enums/roles'
 
 export default class IndexController {
   async index({ view, auth }: HttpContext) {
@@ -42,10 +43,16 @@ export default class IndexController {
     const endDate = DateTime.fromISO(data.end_date)
     const days = Math.max(1, Math.round(endDate.diff(startDate, 'days').days + 1))
 
+    const departmentId = [Role.CEO, Role.HR].includes(auth.user!.roleId)
+      ? null
+      : auth.user!.departmentId
+
+    console.log(departmentId)
+
     await Leave.create({
       ...data,
       userId: auth.user!.id,
-      departmentId: auth.user!.departmentId,
+      departmentId,
       status: LeaveStatus.PENDING,
       days,
     })
@@ -56,7 +63,7 @@ export default class IndexController {
 
   async calendar({ view }: HttpContext) {
     const leaves = await Leave.query()
-      .where('status', LeaveStatus.APPROVED_BY_CEO)
+      .where('status', LeaveStatus.APPROVED)
       .preload('user')
       .orderBy('start_date', 'asc')
 
@@ -70,15 +77,15 @@ export default class IndexController {
     return view.render('pages/leaves/calendar', { events })
   }
 
-  private getLeaveTypeColor(type: LeaveType): string {
-    const colors = {
-      [LeaveType.ANNUAL]: '#34D399',
-      [LeaveType.SICK]: '#60A5FA',
-      [LeaveType.MATERNITY]: '#F472B6',
-      [LeaveType.PATERNITY]: '#A78BFA',
-      [LeaveType.COMPASSIONATE]: '#FBBF24',
-      [LeaveType.UNPAID]: '#6B7280',
-    }
-    return colors[type]
-  }
+  //   private getLeaveTypeColor(type: LeaveType): string {
+  //     const colors = {
+  //       [LeaveType.ANNUAL]: '#34D399',
+  //       [LeaveType.SICK]: '#60A5FA',
+  //       [LeaveType.MATERNITY]: '#F472B6',
+  //       [LeaveType.PATERNITY]: '#A78BFA',
+  //       [LeaveType.COMPASSIONATE]: '#FBBF24',
+  //       [LeaveType.UNPAID]: '#6B7280',
+  //     }
+  //     return colors[type]
+  //   }
 }
