@@ -47,12 +47,13 @@ jobs:
             pm2 delete leavems || true
     
             # Start with proper config
-            pm2 start bin/server.js \
-                --name leavems \
-                --cwd /home/azureuser/leavems/build \
-                --env production \
-                --port 3334 \
-                --watch false 
+            PORT=3334 pm2 start bin/server.js \
+            --name leavems \
+            --cwd /home/azureuser/leavems/build \
+            --env production \
+            --watch false \
+            --time \
+            -- --port 3334 
     
             # Save PM2 process list
             pm2 save
