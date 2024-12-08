@@ -48,5 +48,5 @@ export default await Env.create(new URL('../', import.meta.url), {
   | URL pointing to your app; useful for emails
   |----------------------------------------------------------
   */
-  APP_URL: Env.schema.string()
+  APP_URL: Env.schema.string(),
 })

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import adonisjs from '@adonisjs/vite/client'
-import tailwind from 'tailwindcss';
-import autoprefixer from 'autoprefixer';
+import tailwind from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
 
 export default defineConfig({
   plugins: [
@@ -18,5 +18,5 @@ export default defineConfig({
       reload: ['resources/views/**/*.edge'],
     }),
   ],
-  css: { postcss: { plugins: [tailwind(), autoprefixer()] } }
+  css: { postcss: { plugins: [tailwind(), autoprefixer()] } },
 })
