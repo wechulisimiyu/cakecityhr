@@ -23,6 +23,7 @@ jobs:
           key: ${{ secrets.AZURE_SSH_KEY }}
           script: |
 
+            # install tools
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
@@ -34,11 +35,13 @@ jobs:
             npm ci
             
             node ace build
-            cp .env build/.env
+            cp ~/.env build/.env
+
+            # deploy now
             cd build
-            export NODE_ENV=production
-            echo "NODE_ENV=production" >> .env
             npm ci --omit="dev" 
             
             # Update PM2 config and restart
-            pm2 start leavems
+            pm2 delete leavems || true
+            pm2 start bin/server.js --name leavems
+            pm2 save
