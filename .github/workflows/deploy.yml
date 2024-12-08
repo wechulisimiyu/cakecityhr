@@ -14,6 +14,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22'
+          cache: 'npm' 
 
       - name: Deploy to Azure
         uses: appleboy/ssh-action@master
@@ -41,7 +42,20 @@ jobs:
             cd build
             npm ci --omit="dev" 
             
-            # Update PM2 config and restart
+            # Stop existing process if running
+            pm2 stop leavems || true
             pm2 delete leavems || true
-            pm2 start bin/server.js --name leavems
+    
+            # Start with proper config
+            pm2 start bin/server.js \
+                --name leavems \
+                --cwd /home/azureuser/leavems/build \
+                --env production \
+                --port 3334 \
+                --watch false 
+    
+            # Save PM2 process list
             pm2 save
+    
+            # Verify process is running
+            pm2 list | grep leavems
