@@ -11,6 +11,11 @@ export default class extends BaseSchema {
       table.string('email', 254).notNullable().unique()
       table.string('password').notNullable()
       table.integer('department_id').unsigned().references('id').inTable('departments').nullable()
+      table.integer('annual_leave_balance').nullable()
+      table.integer('sick_leave_balance').nullable()
+      table.integer('paternity_leave_balance').nullable()
+      table.integer('maternity_leave_balance').nullable()
+      table.enum('gender', [1, 2, 3]).notNullable().defaultTo('1')
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()

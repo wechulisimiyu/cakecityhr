@@ -15,9 +15,42 @@ export default class IndexController {
       })
       .orderBy('created_at', 'desc')
 
+    // Get used leave days from approved leaves
+    const approvedLeaves = await Leave.query()
+      .where('user_id', auth.user!.id)
+      .where('status', LeaveStatus.APPROVED)
+
+    const usedDays = {
+      annual: 0,
+      sick: 0,
+      paternity: 0,
+      maternity: 0,
+    }
+
+    approvedLeaves.forEach((leave) => {
+      switch (leave.type) {
+        case LeaveType.ANNUAL:
+          usedDays.annual += leave.days
+          break
+        case LeaveType.SICK:
+          usedDays.sick += leave.days
+          break
+        case LeaveType.PATERNITY:
+          usedDays.paternity += leave.days
+          break
+        case LeaveType.MATERNITY:
+          usedDays.maternity += leave.days
+          break
+      }
+    })
+
+    const userGender = Number(auth.user!.gender)
+
     const leaveBalance = {
-      annual: 21,
-      sick: 14,
+      annual: 21 - usedDays.annual,
+      sick: 14 - usedDays.sick,
+      paternity: userGender === 1 ? 14 - usedDays.paternity : null,
+      maternity: userGender === 2 ? 90 - usedDays.maternity : null,
     }
 
     return view.render('pages/leaves/index', { leaves, leaveBalance })

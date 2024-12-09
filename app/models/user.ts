@@ -38,10 +38,25 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare password: string
 
   @column()
+  declare gender: 1 | 2 | 3
+
+  @column()
   declare roleId: number
 
   @column()
   declare departmentId: number | null
+
+  @column()
+  declare annualLeaveBalance: number | null
+
+  @column()
+  declare sickLeaveBalance: number | null
+
+  @column()
+  declare paternityLeaveBalance: number | null
+
+  @column()
+  declare maternityLeaveBalance: number | null
 
   @belongsTo(() => Role)
   declare role: BelongsTo<typeof Role>

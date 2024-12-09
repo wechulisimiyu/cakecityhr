@@ -11,6 +11,7 @@ export default class extends BaseSeeder {
       email: 'ceo@cakecity.com',
       password: 'password123',
       roleId: Role.CEO,
+      gender: 2,
     })
 
     // Create HR Manager
@@ -19,7 +20,8 @@ export default class extends BaseSeeder {
       email: 'hr@cakecity.com',
       password: 'password123',
       roleId: Role.HR,
-      departmentId: 2, // HR Department
+      departmentId: 2,
+      gender: 2,
     })
 
     // Get all departments
@@ -34,19 +36,21 @@ export default class extends BaseSeeder {
         password: 'password123',
         roleId: Role.DEPARTMENT_HEAD,
         departmentId: dept.id,
+        gender: dept.id % 2 === 0 ? 2 : 1,
       })
 
       // Update department with head
       await dept.merge({ departmentHeadId: deptHead.id }).save()
 
-      // Create 2 regular employees for each department
-      for (let i = 1; i <= 2; i++) {
+      // Create 10 regular employees for each department
+      for (let i = 1; i <= 10; i++) {
         await User.create({
           fullName: `Employee ${i} ${dept.name}`,
           email: `employee${i}.${dept.name.toLowerCase().replace(/\s+/g, '')}@cakecity.com`,
           password: 'password123',
           roleId: Role.EMPLOYEE,
           departmentId: dept.id,
+          gender: i === 1 ? 2 : 1,
         })
       }
     }

@@ -68,23 +68,69 @@
         </div>
 
         {{-- Other Leave Types --}}
-        <div class="bg-white p-4 rounded-lg border border-gray-200">
-          <div class="flex justify-between items-start">
-            <div>
-              <p class="text-sm font-medium text-gray-500">
-                Other Leave Types
-              </p>
-              <p class="mt-1 text-sm text-gray-600">
-                • Maternity: 90 days<br />
-                • Paternity: 14 days<br />
-                • Compassionate: Via annual
-              </p>
+        @if(leaveBalance.paternity)
+          {{-- Paternity Leave Card --}}
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-500">
+                  Paternity Leave
+                </p>
+                <p class="mt-1 text-2xl font-semibold text-gray-900">
+                  {{ leaveBalance.paternity ?? 14 }}
+                </p>
+              </div>
+              <div class="bg-purple-100 p-1.5 rounded-full">
+                @!svg('ph:baby', { class: 'size-5 text-purple-600' })
+              </div>
             </div>
-            <div class="bg-gray-100 p-1.5 rounded-full">
-              @!svg('ph:info', { class: 'size-5 text-gray-600' })
+            {{-- Progress bar --}}
+            <div class="mt-2">
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  class="bg-purple-600 h-2 rounded-full"
+                  style="width: {{ ((14 - (leaveBalance.paternity ?? 14)) / 14) * 100 }}%"
+                >
+                </div>
+              </div>
+              <p class="mt-1 text-xs text-gray-500">
+                {{ 14 - (leaveBalance.paternity ?? 14) }} days used
+              </p>
             </div>
           </div>
-        </div>
+        @endif
+        
+        @if(leaveBalance.maternity)
+          {{-- Maternity Leave Card --}}
+          <div class="bg-white p-4 rounded-lg border border-gray-200">
+            <div class="flex justify-between items-start">
+              <div>
+                <p class="text-sm font-medium text-gray-500">
+                  Maternity Leave
+                </p>
+                <p class="mt-1 text-2xl font-semibold text-gray-900">
+                  {{ leaveBalance.maternity ?? 90 }}
+                </p>
+              </div>
+              <div class="bg-pink-100 p-1.5 rounded-full">
+                @!svg('ph:baby', { class: 'size-5 text-pink-600' })
+              </div>
+            </div>
+            {{-- Progress bar --}}
+            <div class="mt-2">
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  class="bg-pink-600 h-2 rounded-full"
+                  style="width: {{ ((90 - (leaveBalance.maternity ?? 90)) / 90) * 100 }}%"
+                >
+                </div>
+              </div>
+              <p class="mt-1 text-xs text-gray-500">
+                {{ 90 - (leaveBalance.maternity ?? 90) }} days used
+              </p>
+            </div>
+          </div>
+        @endif
       </div>
     </div>
 
@@ -130,11 +176,9 @@
               {{ leave.status }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              @if(leave.status === 'pending')
-                @button({ href: route('leaves.show', [leave.id]), variant: 'ghost' })
-                  View
-                @end
-              @endif
+              @button({ href: route('leaves.show', [leave.id]), variant: 'ghost' })
+                View
+              @end
             </td>
           </tr>
         @end
