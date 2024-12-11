@@ -7,7 +7,7 @@ export default class extends BaseSeeder {
   async run() {
     // Create CEO first
     await User.create({
-      fullName: 'John Smith',
+      fullName: 'Mohamed Zahir Nazir',
       email: 'ceo@cakecity.com',
       password: 'password123',
       roleId: Role.CEO,
@@ -16,7 +16,7 @@ export default class extends BaseSeeder {
 
     // Create HR Manager
     await User.create({
-      fullName: 'Sarah Wilson',
+      fullName: 'Dinah Isaboke',
       email: 'hr@cakecity.com',
       password: 'password123',
       roleId: Role.HR,
@@ -42,15 +42,15 @@ export default class extends BaseSeeder {
       // Update department with head
       await dept.merge({ departmentHeadId: deptHead.id }).save()
 
-      // Create 10 regular employees for each department
-      for (let i = 1; i <= 10; i++) {
+      // Create 5 regular employees for each department
+      for (let i = 1; i <= 5; i++) {
         await User.create({
           fullName: `Employee ${i} ${dept.name}`,
           email: `employee${i}.${dept.name.toLowerCase().replace(/\s+/g, '')}@cakecity.com`,
           password: 'password123',
           roleId: Role.EMPLOYEE,
           departmentId: dept.id,
-          gender: i === 1 ? 2 : 1,
+          gender: i % 2 === 0 ? 2 : 1,
         })
       }
     }
