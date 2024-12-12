@@ -1,0 +1,99 @@
+<div x-data="{ 
+  isSidebarOpen: localStorage.getItem('sidebarOpen') === 'true',
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+    localStorage.setItem('sidebarOpen', this.isSidebarOpen);
+  }
+}">
+  {{-- Toggle Button --}}
+  <button
+    @click="toggleSidebar()"
+    type="button"
+    class="fixed top-4 z-50 inline-flex items-center p-2 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-all duration-300"
+    :class="isSidebarOpen ? 'left-64' : 'left-4'"
+  >
+    <span class="sr-only">Toggle sidebar</span>
+    @!svg('ph:list', { class: 'size-6' })
+  </button>
+
+  {{-- Sidebar --}}
+  <aside 
+    id="app-sidebar"
+    class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform duration-300"
+    :class="isSidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+    aria-label="Sidebar"
+  >
+    <div class="h-full px-3 py-4 overflow-y-auto bg-white border-r border-gray-200">
+      <div class="mb-6">
+        {{-- Logo/Branding --}}
+        <a href="{{ route('/') }}" class="flex items-center ps-2.5 mb-5">
+          <img src="/images/logo.webp" class="h-16 w-auto" alt="{{ app.appName }}" />
+        </a>
+      </div>
+
+      <ul class="space-y-2 font-medium">
+        {{-- Dashboard --}}
+        <li>
+          <a href="{{ route('/') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+            @!svg('ph:squares-four', { class: 'size-5 text-gray-500 transition duration-75 group-hover:text-gray-900' })
+            <span class="ms-3">Dashboard</span>
+          </a>
+        </li>
+
+        {{-- Leave Applications --}}
+        <li>
+          <a href="{{ route('/leave') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+            @!svg('ph:calendar', { class: 'size-5 text-gray-500 transition duration-75 group-hover:text-gray-900' })
+            <span class="ms-3">Leave Applications</span>
+          </a>
+        </li>
+
+        @if(await auth.check() && auth.user.roleId !== Role.EMPLOYEE)
+          {{-- Approvals --}}
+          <li>
+            <a href="{{ route('/approvals') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+              @!svg('ph:check-circle', { class: 'size-5 text-gray-500 transition duration-75 group-hover:text-gray-900' })
+              <span class="ms-3">Leave Approvals</span>
+            </a>
+          </li>
+
+          {{-- Liability --}}
+          <li>
+            <a href="{{ route('/dashboard/liability') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+              @!svg('ph:chart-line', { class: 'size-5 text-gray-500 transition duration-75 group-hover:text-gray-900' })
+              <span class="ms-3">Leave Liability</span>
+            </a>
+          </li>
+        @endif
+
+        {{-- Settings --}}
+        <li>
+          <a href="{{ route('settings.profile') }}" class="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+            @!svg('ph:gear', { class: 'size-5 text-gray-500 transition duration-75 group-hover:text-gray-900' })
+            <span class="ms-3">Settings</span>
+          </a>
+        </li>
+
+        {{-- Logout --}}
+        <li>
+          @form({ action: route('auth.logout') })
+            <button type="submit" class="w-full flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 group">
+              @!svg('ph:sign-out', { class: 'size-5 text-gray-500 transition duration-75 group-hover:text-gray-900' })
+              <span class="ms-3">Logout</span>
+            </button>
+          @end
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  {{-- Main Content Wrapper --}}
+  <div 
+    class="transition-all duration-300 min-h-screen"
+    :class="isSidebarOpen ? 'ml-64' : 'ml-0'"
+  >
+    <div class="p-4">
+      {{{ await $slots.main() }}}
+    </div>
+  </div>
+</div>
