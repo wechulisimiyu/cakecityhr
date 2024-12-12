@@ -84,12 +84,14 @@ router
 
     router.get('/leave/create', [IndexLeaveController, 'create']).as('leaves.create')
 
-    router.get('/leave/calendar', [IndexLeaveController, 'calendar']).as('leaves.calendar')
+    // router.get('/leave/calendar', [IndexLeaveController, 'calendar']).as('leaves.calendar')
 
     // Approval routes (specific path)
     router.group(() => {
-      router.get('/approvals', [ApprovalsController, 'index']).as('leaves.approvals')
-      router.post('/approvals/:id', [ApprovalsController, 'store']).as('leaves.approve')
+      router.get('/approvals', [ApprovalsController, 'index']).as('approvals.index')
+      router.get('/approvals/:id', [ApprovalsController, 'show']).as('approvals.show')
+      router.post('/approvals/:id/reject', [ApprovalsController, 'reject']).as('approvals.reject')
+      router.post('/approvals/:id/accept', [ApprovalsController, 'accept']).as('approvals.accept')
     })
     // .use(middleware.role('DEPARTMENT_HEAD'))
 

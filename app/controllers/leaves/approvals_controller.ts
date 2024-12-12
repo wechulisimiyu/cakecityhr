@@ -40,57 +40,144 @@ export default class ApprovalsController {
 
     const leaves = await leavesQuery
 
-    return view.render('pages/leaves/approvals', {
+    return view.render('pages/approvals/approvals', {
       leaves,
       userRole: auth.user!.roleId,
       department: user.department,
     })
   }
 
-  async store({ params, auth, response, session, request }: HttpContext) {
+  async show({ params, view, auth, response }: HttpContext) {
     const user = auth.user!
     if (![Role.DEPARTMENT_HEAD, Role.HR, Role.CEO].includes(user.roleId)) {
+      return response.redirect().toRoute('leaves.index')
+    }
+
+    const leave = await Leave.query()
+      .where('id', params.id)
+      .preload('user')
+      .preload('approvals', (query) => {
+        query.orderBy('created_at', 'desc')
+      })
+      .preload('department')
+      .firstOrFail()
+
+    // Verify user has permission to view this approval
+    const canView =
+      user.roleId === Role.DEPARTMENT_HEAD
+        ? leave.status === LeaveStatus.PENDING && leave.departmentId === user.departmentId
+        : user.roleId === Role.HR
+          ? leave.status === LeaveStatus.PENDING_HR
+          : user.roleId === Role.CEO && leave.status === LeaveStatus.PENDING_CEO
+
+    if (!canView) {
       return response.redirect().back()
     }
 
-    const { comments } = request.only(['comments'])
-    const leave = await Leave.query()
-      .where('id', params.id)
-      .where(
-        'status',
-        user.roleId === Role.DEPARTMENT_HEAD
-          ? LeaveStatus.PENDING
-          : user.roleId === Role.HR
-            ? LeaveStatus.PENDING_HR
-            : LeaveStatus.PENDING_CEO
-      )
-      .firstOrFail()
-
-    await LeaveApproval.create({
-      leaveId: leave.id,
-      approverId: user.id,
-      approverRole:
-        user.roleId === Role.DEPARTMENT_HEAD
-          ? 'DEPARTMENT_HEAD'
-          : user.roleId === Role.HR
-            ? 'HR'
-            : 'CEO',
-      action: 'APPROVED',
-      comments,
+    return view.render('pages/approvals/approval_details', {
+      leave,
+      userRole: user.roleId,
     })
+  }
 
-    await leave
-      .merge({
-        status:
+  async accept({ params, auth, response, session, request }: HttpContext) {
+    const user = auth.user!
+
+    if (![Role.DEPARTMENT_HEAD, Role.HR, Role.CEO].includes(user.roleId)) {
+      session.flash('error', 'Unauthorized')
+      return response.redirect().toRoute('leaves.index')
+    }
+
+    try {
+      // 2. Find and verify leave status
+      const leave = await Leave.query().where('id', params.id).firstOrFail()
+
+      // 3. Verify correct status for role
+      const validStatus =
+        (user.roleId === Role.DEPARTMENT_HEAD && leave.status === LeaveStatus.PENDING) ||
+        (user.roleId === Role.HR && leave.status === LeaveStatus.PENDING_HR) ||
+        (user.roleId === Role.CEO && leave.status === LeaveStatus.PENDING_CEO)
+
+      if (!validStatus) {
+        session.flash('error', 'Invalid leave status for approval')
+        return response.redirect().toRoute('approvals.index')
+      }
+
+      // 4. Create approval record
+      const { comments } = request.only(['comments'])
+      await LeaveApproval.create({
+        leaveId: leave.id,
+        approverId: user.id,
+        approverRole:
           user.roleId === Role.DEPARTMENT_HEAD
-            ? LeaveStatus.PENDING_HR
+            ? 'DEPARTMENT_HEAD'
             : user.roleId === Role.HR
-              ? LeaveStatus.PENDING_CEO
-              : LeaveStatus.APPROVED,
+              ? 'HR'
+              : 'CEO',
+        action: 'APPROVED',
+        comments,
       })
-      .save()
 
-    session.flash('success', 'Leave request approved')
-    return response.redirect().back()
+      // 5. Update leave status
+      const newStatus =
+        user.roleId === Role.DEPARTMENT_HEAD
+          ? LeaveStatus.PENDING_HR
+          : user.roleId === Role.HR
+            ? LeaveStatus.PENDING_CEO
+            : LeaveStatus.APPROVED
+
+      await leave.merge({ status: newStatus }).save()
+
+      session.flash('success', 'Leave request approved')
+      return response.redirect().toRoute('approvals.index')
+    } catch (error) {
+      session.flash('error', 'Failed to process approval')
+      return response.redirect().toRoute('approvals.index')
+    }
+  }
+
+  async reject({ params, auth, response, session, request }: HttpContext) {
+    const user = auth.user!
+
+    if (![Role.DEPARTMENT_HEAD, Role.HR, Role.CEO].includes(user.roleId)) {
+      session.flash('error', 'Unauthorized')
+      return response.redirect().toRoute('leaves.index')
+    }
+
+    try {
+      const leave = await Leave.query().where('id', params.id).firstOrFail()
+
+      const validStatus =
+        (user.roleId === Role.DEPARTMENT_HEAD && leave.status === LeaveStatus.PENDING) ||
+        (user.roleId === Role.HR && leave.status === LeaveStatus.PENDING_HR) ||
+        (user.roleId === Role.CEO && leave.status === LeaveStatus.PENDING_CEO)
+
+      if (!validStatus) {
+        session.flash('error', 'Invalid leave status for rejection')
+        return response.redirect().toRoute('approvals.index')
+      }
+
+      const { comments } = request.only(['comments'])
+      await LeaveApproval.create({
+        leaveId: leave.id,
+        approverId: user.id,
+        approverRole:
+          user.roleId === Role.DEPARTMENT_HEAD
+            ? 'DEPARTMENT_HEAD'
+            : user.roleId === Role.HR
+              ? 'HR'
+              : 'CEO',
+        action: 'REJECTED',
+        comments,
+      })
+
+      await leave.merge({ status: LeaveStatus.REJECTED }).save()
+
+      session.flash('success', 'Leave request rejected')
+      return response.redirect().toRoute('approvals.index')
+    } catch (error) {
+      session.flash('error', 'Failed to process rejection')
+      return response.redirect().toRoute('approvals.index')
+    }
   }
 }

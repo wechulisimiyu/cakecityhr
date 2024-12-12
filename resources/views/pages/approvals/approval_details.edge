@@ -1,0 +1,104 @@
+{{-- views/pages/leaves/approval_details.edge --}}
+@layout({ title: 'Leave Request Details' })
+  @card({
+    title: 'Leave Request Details',
+    description: 'Review and process leave application'
+  })
+    <div class="space-y-8">
+      {{-- Employee Details --}}
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Employee Details</h4>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-sm text-gray-500">Name</p>
+            <p class="font-medium">{{ leave.user.fullName }}</p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">Department</p>
+            <p class="font-medium">{{ leave.department.name }}</p>
+          </div>
+        </div>
+      </div>
+
+      {{-- Leave Details --}}
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Leave Details</h4>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-sm text-gray-500">Type</p>
+            <p class="font-medium capitalize">{{ leave.type }}</p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">Status</p>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+              {{ leave.status === 'pending' ? 'bg-yellow-100 text-yellow-800' : 
+                 leave.status === 'pending_hr' ? 'bg-blue-100 text-blue-800' :
+                 leave.status === 'pending_ceo' ? 'bg-purple-100 text-purple-800' :
+                 leave.status === 'approved' ? 'bg-green-100 text-green-800' :
+                 'bg-red-100 text-red-800' }}">
+              {{ leave.status }}
+            </span>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">Period</p>
+            <p class="font-medium">{{ leave.startDate.toFormat('dd LLL yyyy') }} - {{ leave.endDate.toFormat('dd LLL yyyy') }}</p>
+            <p class="text-sm text-gray-500 mt-1">{{ leave.days }} days</p>
+          </div>
+        </div>
+      </div>
+
+      {{-- Reason --}}
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Reason</h4>
+        <p class="text-gray-900">{{ leave.reason }}</p>
+      </div>
+
+      {{-- Approval History --}}
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h4 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-4">Approval History</h4>
+        <div class="space-y-4">
+          @each(approval in leave.approvals)
+            <div class="border-b border-gray-200 pb-4">
+              <div class="flex justify-between items-start">
+                <div>
+                  <p class="font-medium">{{ approval.approverRole }}</p>
+                  <p class="text-sm text-gray-500">{{ approval.createdAt.toFormat('dd LLL yyyy HH:mm') }}</p>
+                </div>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                  {{ approval.action === 'APPROVED' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                  {{ approval.action }}
+                </span>
+              </div>
+              @if(approval.comments)
+                <p class="mt-2 text-sm text-gray-600">{{ approval.comments }}</p>
+              @end
+            </div>
+          @end
+        </div>
+      </div>
+
+      {{-- Action Buttons --}}
+      <div class="flex gap-4">
+        @form({ action: route('approvals.accept', [leave.id]) })
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Comments (Optional)</label>
+            <textarea name="comments" rows="3" class="w-96 rounded-md border-gray-300"></textarea>
+          </div>
+          @button({ type: 'submit', class: 'bg-green-600 hover:bg-green-700' })
+            Approve Leave
+          @end
+        @end
+
+        @form({ action: route('approvals.reject', [leave.id]) })
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Comments (Optional)</label>
+            <textarea name="comments" rows="3" class="w-96 rounded-md border-gray-300"></textarea>
+          </div>
+          @button({ type: 'submit', class: 'bg-red-600 hover:bg-red-700' })
+            Reject Leave
+          @end
+        @end
+      </div>
+    </div>
+  @end
+@end
