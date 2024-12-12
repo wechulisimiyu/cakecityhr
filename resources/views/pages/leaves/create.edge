@@ -6,9 +6,9 @@
   @form({ action: route('leaves.store'), class: 'grid gap-y-4' })
   @form.group({ label: 'Leave Type', name: 'type' })
     @!form.select({ 
-      options: Object.entries(LeaveType ?? {}).map(([key]) => ({
+      options: Object.entries(LeaveType).map(([key, value]) => ({
         label: key.charAt(0) + key.slice(1).toLowerCase(),
-        value: LeaveType[key]
+        value: value
       })),
       required: true
     })

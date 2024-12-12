@@ -35,12 +35,15 @@ export default class IndexController {
     const currentYear = DateTime.now().year
     const leaveBalance = await LeaveService.calculateLeaveBalance(auth.user!.id, currentYear)
 
-    return view.render('pages/leaves/index', { leaves, leaveBalance })
+    // Cast gender to number since it's stored as a numeric enum (1 = male, 2 = female)
+    const gender = Number(auth.user!.gender)
+
+    return view.render('pages/leaves/index', { leaves, leaveBalance, LeaveType, gender })
   }
 
   async create({ view }: HttpContext) {
     return view.render('pages/leaves/create', {
-      leaveTypes: Object.values(LeaveType),
+      LeaveType, // Pass the enum directly instead of Object.values()
     })
   }
 
