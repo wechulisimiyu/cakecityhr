@@ -18,6 +18,7 @@ const ProfileController = () => import('#controllers/settings/profile_controller
 const AccountController = () => import('#controllers/settings/account_controller')
 const IndexLeaveController = () => import('#controllers/leaves/index_controller')
 const ApprovalsController = () => import('#controllers/leaves/approvals_controller')
+const LiabilityController = () => import('#controllers/liabilities/liabilities_controller')
 
 router.on('/').render('pages/home')
 
@@ -102,3 +103,18 @@ router
     router.get('/leave/:id', [IndexLeaveController, 'show']).as('leaves.show')
   })
   .use(middleware.auth()) // Apply auth to all leave routes
+
+//* Liability
+router
+  .group(() => {
+    router
+      .get('/dashboard/liability', [LiabilityController, 'index'])
+      .as('dashboard.liability.index')
+    router
+      .get('/dashboard/liability/department/:id', [LiabilityController, 'department'])
+      .as('dashboard.liability.department')
+    router
+      .get('/dashboard/liability/employee/:id', [LiabilityController, 'employee'])
+      .as('dashboard.liability.employee')
+  })
+  .use(middleware.auth())

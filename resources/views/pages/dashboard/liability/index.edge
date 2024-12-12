@@ -1,0 +1,23 @@
+@layout({ title: 'Leave Liability Overview' })
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">Leave Liability Dashboard</h1>
+    
+    {{-- Company Overview --}}
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">Company Overview</h2>
+      <p class="text-lg">Total Liability: KES{{ companyLiability.totalLiability.toFixed(2) }}</p>
+    </div>
+
+    {{-- Department Breakdown --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @each(dept in companyLiability.departmentLiabilities)
+        <div class="bg-white rounded-lg shadow p-6">
+          <h3 class="text-lg font-semibold mb-2">{{ dept.departmentName }}</h3>
+          <p>Total: KES{{ dept.total.toFixed(2) }}</p>
+          <a href="{{ route('dashboard.liability.department', [dept.departmentId]) }}" 
+             class="text-blue-600 hover:underline">View Details</a>
+        </div>
+      @end
+    </div>
+  </div>
+@end

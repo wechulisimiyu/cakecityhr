@@ -1,8 +1,27 @@
 import { DateTime } from 'luxon'
 import Holiday from '#models/holiday'
 import Leave from '#models/leave'
+import User from '#models/user'
+import Department from '#models/department'
+import EmployeeSalary from '#models/employee_salary'
 import { LeaveStatus } from '#enums/leave_status'
 import { LeaveType } from '#enums/leave_type'
+
+interface LiabilityReport {
+  employeeId: number
+  employeeName: string | null // this will be a problem I know
+  departmentId: number | null
+  departmentName: string // Will be 'Management' for null departments
+  annualLeaveBalance: number
+  dailyRate: number
+  totalLiability: number
+}
+
+interface DepartmentLiability {
+  departmentId: number
+  departmentName: string
+  total: number
+}
 
 export class LeaveService {
   /**
@@ -106,6 +125,87 @@ export class LeaveService {
       maternity: 90 - usedDays.maternity,
       compassionate: 7 - usedDays.compassionate,
       unpaid: Infinity,
+    }
+  }
+
+  static readonly WORKING_DAYS_PER_YEAR = 260
+
+  static async calculateEmployeeLiability(userId: number): Promise<LiabilityReport> {
+    const user = await User.findOrFail(userId)
+    const currentSalary = await EmployeeSalary.query()
+      .where('user_id', userId)
+      .where('is_current_salary', true)
+      .firstOrFail()
+
+    // For users without department (CEO, HR), return Management
+    const department = await user.related('department').query().first()
+    const departmentName = department?.name ?? 'Management'
+
+    const leaveBalance = await this.calculateLeaveBalance(userId, DateTime.now().year)
+    const dailyRate = currentSalary.annualBaseSalary / this.WORKING_DAYS_PER_YEAR
+    const liability = leaveBalance.annual * dailyRate
+
+    return {
+      employeeId: userId,
+      employeeName: user.fullName,
+      departmentId: department?.id ?? null,
+      departmentName,
+      annualLeaveBalance: leaveBalance.annual,
+      dailyRate,
+      totalLiability: liability,
+    }
+  }
+
+  static async calculateDepartmentLiability(departmentId: number): Promise<{
+    departmentName: string
+    totalLiability: number
+    employeeLiabilities: LiabilityReport[]
+  }> {
+    const department = await Department.findOrFail(departmentId)
+    if (!department.name) {
+      throw new Error(`Department ${departmentId} must have a name`)
+    }
+
+    const employees = await User.query().where('department_id', departmentId)
+    const liabilities = await Promise.all(
+      employees.map((employee) => this.calculateEmployeeLiability(employee.id))
+    )
+
+    return {
+      departmentName: department.name,
+      totalLiability: liabilities.reduce((sum, l) => sum + l.totalLiability, 0),
+      employeeLiabilities: liabilities,
+    }
+  }
+
+  static async calculateCompanyLiability(): Promise<{
+    totalLiability: number
+    departmentLiabilities: DepartmentLiability[]
+    managementLiability: number
+  }> {
+    const departments = await Department.all()
+    const departmentLiabilities = await Promise.all(
+      departments.map(async (dept) => {
+        const deptLiability = await this.calculateDepartmentLiability(dept.id)
+        return {
+          departmentId: dept.id,
+          departmentName: dept.name,
+          total: deptLiability.totalLiability,
+        }
+      })
+    )
+
+    // Calculate liability for users without department
+    const managementUsers = await User.query().whereNull('department_id')
+    const managementLiability = await Promise.all(
+      managementUsers.map((user) => this.calculateEmployeeLiability(user.id))
+    ).then((managementResults) => managementResults.reduce((sum, l) => sum + l.totalLiability, 0))
+
+    return {
+      totalLiability:
+        departmentLiabilities.reduce((sum, l) => sum + l.total, 0) + managementLiability,
+      departmentLiabilities,
+      managementLiability,
     }
   }
 }

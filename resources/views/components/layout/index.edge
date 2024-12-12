@@ -9,7 +9,7 @@
     @endif
     
     <title>
-      {{ title || app.appName }} - AdonisJS
+      {{ title || app.appName }} - Leave Management
     </title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -42,6 +42,12 @@
                 class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center"
               >
                 Leave Approvals
+    </a>
+    <a
+                href="{{ route('/dashboard/liability') }}"
+                class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center"
+              >
+                Liability
     </a>
             @endif
           </nav>
