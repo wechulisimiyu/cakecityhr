@@ -36,7 +36,7 @@ jobs:
             npm ci
             
             node ace build
-            cp ~/.env build/.env
+            cp ../.env build/.env
 
             # deploy now
             cd build
