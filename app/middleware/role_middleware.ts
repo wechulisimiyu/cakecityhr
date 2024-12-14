@@ -1,19 +1,19 @@
-// app/middleware/role_middleware.ts
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
 import { Role } from '#enums/roles'
 
 export default class RoleMiddleware {
-  async handle(ctx: HttpContext, next: NextFn, ...allowedRoles: string[]) {
+  /**
+   * The URL to redirect to when user doesn't have required role
+   */
+  redirectTo = '/'
+
+  async handle(ctx: HttpContext, next: NextFn, allowedRoles: Role[]) {
     const user = ctx.auth.user
 
-    // Convert string roles to enum values
-    const roles = allowedRoles.map((role) => Role[role as keyof typeof Role])
-
-    // Check if user has one of the allowed roles
-    if (!user || !roles.includes(user.roleId)) {
+    if (!user || !allowedRoles.includes(user.roleId)) {
       ctx.session.flash('error', 'You do not have permission to access this page')
-      return ctx.response.redirect().back()
+      return ctx.response.redirect(this.redirectTo)
     }
 
     return next()

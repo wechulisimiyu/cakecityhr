@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+import { Role } from '#enums/roles'
 
 const LoginController = () => import('#controllers/auth/login_controller')
 const LogoutController = () => import('#controllers/auth/logout_controller')
@@ -82,29 +83,23 @@ router
   .group(() => {
     // Static routes first
     router.get('/leave', [IndexLeaveController, 'index']).as('leaves.index')
-
     router.get('/leave/create', [IndexLeaveController, 'create']).as('leaves.create')
-
-    // router.get('/leave/calendar', [IndexLeaveController, 'calendar']).as('leaves.calendar')
-
-    // Approval routes (specific path)
-    router.group(() => {
-      router.get('/approvals', [ApprovalsController, 'index']).as('approvals.index')
-      router.get('/approvals/:id', [ApprovalsController, 'show']).as('approvals.show')
-      router.post('/approvals/:id/reject', [ApprovalsController, 'reject']).as('approvals.reject')
-      router.post('/approvals/:id/accept', [ApprovalsController, 'accept']).as('approvals.accept')
-    })
-    // .use(middleware.role('DEPARTMENT_HEAD'))
-
-    // POST routes
     router.post('/leave', [IndexLeaveController, 'store']).as('leaves.store')
-
-    // Dynamic parameter route last
     router.get('/leave/:id', [IndexLeaveController, 'show']).as('leaves.show')
   })
-  .use(middleware.auth()) // Apply auth to all leave routes
+  .use(middleware.auth()) // Protect all leave routes with auth
 
-//* Liability
+// Approval routes - DEPARTMENT_HEAD only
+router
+  .group(() => {
+    router.get('/approvals', [ApprovalsController, 'index']).as('approvals.index')
+    router.get('/approvals/:id', [ApprovalsController, 'show']).as('approvals.show')
+    router.post('/approvals/:id/reject', [ApprovalsController, 'reject']).as('approvals.reject')
+    router.post('/approvals/:id/accept', [ApprovalsController, 'accept']).as('approvals.accept')
+  })
+  .use([middleware.auth(), middleware.role([Role.DEPARTMENT_HEAD, Role.HR, Role.CEO])])
+
+// Liability routes - HR and CEO access
 router
   .group(() => {
     router
@@ -117,4 +112,4 @@ router
       .get('/dashboard/liability/employee/:id', [LiabilityController, 'employee'])
       .as('dashboard.liability.employee')
   })
-  .use(middleware.auth())
+  .use([middleware.auth(), middleware.role([Role.HR, Role.CEO])])
