@@ -1,0 +1,49 @@
+@layout({ title: 'Employee Leave Liability' })
+  <div class="container mx-auto px-4 py-8">
+    <div class="mb-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Employee Leave Liability Details</h1>
+      <a href="{{ route('dashboard.liability.department', [employeeLiability.departmentId]) }}" 
+         class="text-blue-600 hover:underline">
+        ← Back to Department
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {{-- Employee Info --}}
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">Employee Information</h2>
+        <dl class="space-y-2">
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Name</dt>
+            <dd class="mt-1">{{ employeeLiability.employeeName }}</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Department</dt>
+            <dd class="mt-1">{{ employeeLiability.departmentName }}</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Daily Rate</dt>
+            <dd class="mt-1">KES{{ employeeLiability.dailyRate.toFixed(2) }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      {{-- Leave Balance --}}
+      <div class="bg-white rounded-lg shadow p-6">
+        <h2 class="text-xl font-semibold mb-4">Leave Balance</h2>
+        <dl class="space-y-2">
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Annual Leave Balance</dt>
+            <dd class="mt-1">{{ employeeLiability.annualLeaveBalance }} days</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-gray-500">Total Liability</dt>
+            <dd class="mt-1 text-lg font-semibold">
+              KES{{ employeeLiability.totalLiability.toFixed(2) }}
+            </dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+@end

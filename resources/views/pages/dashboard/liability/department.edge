@@ -1,0 +1,50 @@
+@layout({ title: departmentLiability.departmentName + ' Department Liability' })
+  <div class="container mx-auto px-4 py-8">
+    <div class="mb-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">{{ departmentLiability.departmentName }} Department Liability</h1>
+      <a href="{{ route('dashboard.liability.index') }}" class="text-blue-600 hover:underline">
+        ← Back to Overview
+      </a>
+    </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="p-6 border-b">
+        <p class="text-lg font-semibold">Total Department Liability: KES{{ departmentLiability.totalLiability.toFixed(2) }}</p>
+      </div>
+
+      @if(employees && employees.length)
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Employee</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Annual Leave Balance</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Daily Rate (KES)</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total Liability (KES)</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              @each(employee in employees)
+                <tr>
+                  <td class="px-6 py-4">{{ employee.employeeName }}</td>
+                  <td class="px-6 py-4">{{ employee.annualLeaveBalance }} days</td>
+                  <td class="px-6 py-4">{{ employee.dailyRate.toFixed(2) }}</td>
+                  <td class="px-6 py-4">{{ employee.totalLiability.toFixed(2) }}</td>
+                  <td class="px-6 py-4">
+                    <a href="{{ route('dashboard.liability.employee', [employee.employeeId]) }}" 
+                       class="text-blue-600 hover:underline">View Details</a>
+                  </td>
+                </tr>
+              @end
+            </tbody>
+          </table>
+        </div>
+      @else
+        <div class="p-6 text-center text-gray-500">
+          No employees found in this department.
+        </div>
+      @endif
+    </div>
+  </div>
+@end
