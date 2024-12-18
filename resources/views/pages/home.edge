@@ -1,9 +1,9 @@
 @layout({ title: 'Home Page' })
   <div class="max-w-4xl mx-auto space-y-8">
     {{-- Welcome Section --}}
-    <div class="bg-white mt-4 p-6 rounded-xl shadow">
-      <h1 class="text-2xl font-bold text-gray-900 mb-4">Welcome to the Cake City Leave Management Portal</h1>
-      <p class="text-gray-600">Manage your leave applications and track your leave balance efficiently.</p>
+        <div class="bg-white mt-4 p-6 rounded-xl shadow flex flex-col items-center">
+      <h1 class="text-2xl font-bold text-gray-900 mb-4 text-center">Welcome to the Cake City Leave Management Portal</h1>
+      <p class="text-gray-600 text-center">Manage your leave applications and track your leave balance efficiently.</p>
     </div>
 
     {{-- Leave Policies --}}
@@ -73,20 +73,31 @@
     </div>
 
     {{-- Quick Actions --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      @button({ href: route('leaves.create'), class: 'w-full' })
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+      @button({ 
+        href: route('leaves.create'), 
+        class: 'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors'
+      })
         @!svg('ph:plus-circle', { class: 'size-5' })
-        Apply for Leave
+        <span>Apply for Leave</span>
       @end
-
-      @button({ href: route('leaves.index'), variant: 'ghost', class: 'w-full' })
+    
+      @button({ 
+        href: route('leaves.index'), 
+        variant: 'ghost', 
+        class: 'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors'
+      })
         @!svg('ph:clock-clockwise', { class: 'size-5' })
-        View Applications
+        <span>View Applications</span>
       @end
-
-      @button({ href: route('/'), variant: 'ghost', class: 'w-full' })
+    
+      @button({ 
+        href: route('/'), 
+        variant: 'ghost', 
+        class: 'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors'
+      })
         @!svg('ph:calendar', { class: 'size-5' })
-        Leave Calendar
+        <span>Leave Calendar</span>
       @end
     </div>
 
@@ -95,8 +106,7 @@
       <h2 class="text-xl font-semibold text-gray-900 mb-4">Need Help?</h2>
       <p class="text-gray-600">Contact HR Department for any queries:</p>
       <p class="text-gray-600 mt-2">
-        Email: hr@cakecity.com<br>
-        Extension: 123
+        Email: hr@cakecity.co.ke<br>
       </p>
     </div>
   </div>

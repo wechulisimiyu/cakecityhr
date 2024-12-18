@@ -3,6 +3,9 @@
 import { Calendar } from '@fullcalendar/core'
 import dayGridPlugin from '@fullcalendar/daygrid'
 
+import Alpine from 'alpinejs';
+Alpine.start();
+
 window.initCalendar = function(events) {
     const calendarEl = document.getElementById('calendar')
     if (!calendarEl) return

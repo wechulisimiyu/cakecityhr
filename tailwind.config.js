@@ -10,7 +10,7 @@ export default {
        * Adjust to match your project's needs
        */
       fontFamily: {
-        sans: [ "Instrument Sans", "sans-serif" ]
+        sans: [ "Lato", "sans-serif" ]
       },
       colors: {
         primary: {
