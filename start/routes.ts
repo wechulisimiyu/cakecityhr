@@ -20,6 +20,7 @@ const AccountController = () => import('#controllers/settings/account_controller
 const IndexLeaveController = () => import('#controllers/leaves/index_controller')
 const ApprovalsController = () => import('#controllers/leaves/approvals_controller')
 const LiabilityController = () => import('#controllers/liabilities/liabilities_controller')
+const PeopleController = () => import('#controllers/people/index_controller')
 
 router.on('/').render('pages/home')
 
@@ -111,5 +112,13 @@ router
     router
       .get('/dashboard/liability/employee/:id', [LiabilityController, 'employee'])
       .as('dashboard.liability.employee')
+  })
+  .use([middleware.auth(), middleware.role([Role.HR, Role.CEO])])
+
+// People routes - HR and CEO access
+router
+  .group(() => {
+    router.get('/dashboard/people', [PeopleController, 'index']).as('dashboard.people.index')
+    router.get('/dashboard/people/:id', [PeopleController, 'show']).as('dashboard.people.show')
   })
   .use([middleware.auth(), middleware.role([Role.HR, Role.CEO])])

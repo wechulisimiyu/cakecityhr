@@ -73,6 +73,13 @@
                       class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center"
                     >Liability</a>
                   @endif
+
+                  @if (await auth.check() && (auth.user.roleId === Role.HR || auth.user.roleId === Role.CEO))
+                    <a
+                      href="{{ route('/dashboard/people') }}"
+                      class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center"
+                    >People</a>
+                  @endif
                 </div>
 
                 <!-- Auth Section -->

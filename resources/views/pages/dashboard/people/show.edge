@@ -1,0 +1,64 @@
+@layout({ title: user ? `${user.fullName} - Profile` : 'Employee Profile' })
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    @if(user)
+      {{-- Employee Details --}}
+      <div class="bg-white shadow rounded-lg mb-6">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg font-medium leading-6 text-gray-900">Employee Information</h3>
+          <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <div>
+              <h4 class="text-sm font-medium text-gray-500">Full Name</h4>
+              <p class="mt-1 text-sm text-gray-900">{{ user.fullName }}</p>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium text-gray-500">Department</h4>
+              <p class="mt-1 text-sm text-gray-900">{{ user.department?.name ?? 'Not Assigned' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{-- Leave Statistics --}}
+      <div class="bg-white shadow rounded-lg mb-6">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg font-medium leading-6 text-gray-900">Leave Statistics ({{ currentYear }})</h3>
+          <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
+            <div class="px-4 py-5 bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6">
+              <dt class="text-sm font-medium text-gray-500 truncate">Total Applications</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ leaveStats.total }}</dd>
+            </div>
+            <div class="px-4 py-5 bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6">
+              <dt class="text-sm font-medium text-gray-500 truncate">Annual Leave</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ leaveStats.annual }}</dd>
+            </div>
+            <div class="px-4 py-5 bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6">
+              <dt class="text-sm font-medium text-gray-500 truncate">Sick Leave</dt>
+              <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ leaveStats.sick }}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+      {{-- Leave History --}}
+      <div class="bg-white shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+          <h3 class="text-lg font-medium leading-6 text-gray-900">Leave History</h3>
+          @if(leaves.length)
+            <div class="mt-5">
+              {{-- Leave list items --}}
+            </div>
+          @else
+            <p class="mt-5 text-sm text-gray-500">No leave applications found for this year.</p>
+          @end
+        </div>
+      </div>
+    @else
+      <div class="text-center py-12">
+        <h3 class="text-lg font-medium text-gray-900">{{ error }}</h3>
+        @button({ href: route('dashboard.people.index'), variant: 'ghost' })
+          Back to Directory
+        @end
+      </div>
+    @end
+  </div>
+@end
