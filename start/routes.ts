@@ -21,6 +21,9 @@ const IndexLeaveController = () => import('#controllers/leaves/index_controller'
 const ApprovalsController = () => import('#controllers/leaves/approvals_controller')
 const LiabilityController = () => import('#controllers/liabilities/liabilities_controller')
 const PeopleController = () => import('#controllers/people/index_controller')
+const HealthChecksController = () => import('#controllers/health_checks_controller')
+
+router.get('/health', [HealthChecksController])
 
 router.on('/').render('pages/home')
 
