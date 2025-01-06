@@ -17,8 +17,7 @@
   </div>
 
   <div class="mt-5">
-    @form({ action: form.post('auth.login.store'), class: 'grid gap-y-4' })
-    {{ csrfField() }}
+    @form({ action: form.post('auth.login.store'), class: 'grid gap-y-4', csrf: true  })
       @form.group({ label: 'Email address', name: 'email' })
         @!form.input({ type: 'email', required: true })
       @end
