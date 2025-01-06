@@ -18,6 +18,7 @@
 
   <div class="mt-5">
     @form({ action: form.post('auth.register.store'), class: 'grid gap-y-4' })
+    {{ csrfField() }}
       @form.group({ label: 'Full name', name: 'fullName' })
         @!form.input()
       @end
