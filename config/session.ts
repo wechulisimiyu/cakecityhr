@@ -2,8 +2,6 @@ import env from '#start/env'
 import app from '@adonisjs/core/services/app'
 import { defineConfig, stores } from '@adonisjs/session'
 
-// const isProduction = env.get('NODE_ENV') === 'production'
-
 const sessionConfig = defineConfig({
   enabled: true,
   cookieName: 'adonis-session',
