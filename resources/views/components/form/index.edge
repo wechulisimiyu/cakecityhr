@@ -8,9 +8,9 @@
   @submit="isWorking = true"
   {{ $props.except(['csrf', 'method', 'action']).toAttrs() }}
 >
-  @if (useCSRF)
+  {{-- @if (useCSRF)
     {{ csrfField() }}
-  @endif
+  @endif --}}
   
   {{{ await $slots.main() }}}
 </form>
