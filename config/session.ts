@@ -7,7 +7,7 @@ export const sessionCookieName = 'adonis-session'
 export const sessionCookie: SessionConfig['cookie'] = {
   path: '/',
   httpOnly: true,
-  secure: app.inProduction,
+  secure: false,
   sameSite: 'lax',
   domain: '',
 }
