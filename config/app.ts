@@ -1,5 +1,5 @@
 import env from '#start/env'
-import app from '@adonisjs/core/services/app'
+// import app from '@adonisjs/core/services/app'
 import { Secret } from '@adonisjs/core/helpers'
 import { defineConfig } from '@adonisjs/core/http'
 
@@ -35,7 +35,7 @@ export const http = defineConfig({
     path: '/',
     maxAge: '2h',
     httpOnly: true,
-    secure: app.inProduction,
+    secure: true,
     sameSite: 'lax',
   },
 })
