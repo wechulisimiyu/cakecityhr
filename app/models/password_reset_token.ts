@@ -8,7 +8,6 @@ import router from '@adonisjs/core/services/router'
 import mail from '@adonisjs/mail/services/main'
 import env from '#start/env'
 import { Exception } from '@adonisjs/core/exceptions'
-import app from '@adonisjs/core/services/app'
 
 export default class PasswordResetToken extends BaseModel {
   // how long the token will remain valid after creation
@@ -69,7 +68,7 @@ export default class PasswordResetToken extends BaseModel {
 
     await mail.sendLater((message) => {
       message
-        .subject(`Reset your ${app.appName} password`)
+        .subject(`Reset your CakeCity password`)
         .to(user.email)
         .htmlView('emails/auth/forgot_password', {
           user,
@@ -106,7 +105,7 @@ export default class PasswordResetToken extends BaseModel {
 
     await mail.sendLater((message) => {
       message
-        .subject(`Your ${app.appName} password has been reset`)
+        .subject(`Your CakeCity password has been reset`)
         .to(user.email)
         .htmlView('emails/auth/password_reset', {
           user,

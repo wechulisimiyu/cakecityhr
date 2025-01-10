@@ -11,7 +11,6 @@ import { updateEmailValidator } from '#validators/settings'
 import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 import db from '@adonisjs/lucid/services/db'
 import mail from '@adonisjs/mail/services/main'
-import app from '@adonisjs/core/services/app'
 import EmailHistory from '#models/email_history'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import Department from './department.js'
@@ -118,7 +117,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
     await mail.sendLater((message) => {
       message
         .to(emailOld)
-        .subject(`Your ${app.appName} email has been successfully changed`)
+        .subject(`Your CakeCity email has been successfully changed`)
         .htmlView('emails/account/email_changed', { user: this })
     })
   }
