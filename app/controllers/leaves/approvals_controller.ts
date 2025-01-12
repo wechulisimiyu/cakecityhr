@@ -3,6 +3,8 @@ import Leave from '#models/leave'
 import LeaveApproval from '#models/leave_approval'
 import { LeaveStatus } from '#enums/leave_status'
 import { Role } from '#enums/roles'
+import { DateTime } from 'luxon'
+import { LeaveService } from '#services/leave_service'
 
 export default class ApprovalsController {
   async index({ view, auth, response }: HttpContext) {
@@ -74,9 +76,21 @@ export default class ApprovalsController {
       return response.redirect().back()
     }
 
+    // Get leave balance
+    const currentYear = DateTime.now().year
+    const leaveBalance = await LeaveService.calculateLeaveBalance(leave.userId, currentYear)
+
+    // Get leave history
+    const leaveHistory = await Leave.query()
+      .where('user_id', leave.userId)
+      .whereRaw('EXTRACT(YEAR FROM created_at) = ?', [currentYear])
+      .orderBy('created_at', 'desc')
+
     return view.render('pages/approvals/approval_details', {
       leave,
       userRole: user.roleId,
+      leaveBalance,
+      leaveHistory,
     })
   }
 
