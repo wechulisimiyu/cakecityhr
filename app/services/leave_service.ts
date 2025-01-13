@@ -137,6 +137,18 @@ export class LeaveService {
       .where('is_current_salary', true)
       .firstOrFail()
 
+    if (!currentSalary) {
+      return {
+        employeeId: userId,
+        employeeName: user.fullName,
+        departmentId: user.departmentId,
+        departmentName: user.department?.name ?? 'Management',
+        annualLeaveBalance: 0,
+        dailyRate: 0,
+        totalLiability: 0,
+      }
+    }
+
     // For users without department (CEO, HR), return Management
     const department = await user.related('department').query().first()
     const departmentName = department?.name ?? 'Management'

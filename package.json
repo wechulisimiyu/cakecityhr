@@ -67,6 +67,7 @@
     "@iconify-json/svg-spinners": "^1.2.1",
     "@vinejs/vine": "^2.1.0",
     "alpinejs": "^3.14.7",
+    "chart.js": "^4.4.7",
     "edge-iconify": "^2.0.1",
     "edge.js": "^6.2.0",
     "fullcalendar": "^6.1.15",

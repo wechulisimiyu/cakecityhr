@@ -10,7 +10,7 @@ export default class LiabilityController {
         title: 'Company Leave Liability',
       })
     } catch (error) {
-      return view.render('pages/errors/server-error')
+      return view.render('pages/errors/server_error', { error })
     }
   }
 
