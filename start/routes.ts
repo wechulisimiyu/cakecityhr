@@ -18,10 +18,12 @@ const ForgotPasswordController = () => import('#controllers/auth/forgot_password
 const ProfileController = () => import('#controllers/settings/profile_controller')
 const AccountController = () => import('#controllers/settings/account_controller')
 const IndexLeaveController = () => import('#controllers/leaves/index_controller')
-const ApprovalsController = () => import('#controllers/leaves/approvals_controller')
-const LiabilityController = () => import('#controllers/liabilities/liabilities_controller')
-const PeopleController = () => import('#controllers/people/index_controller')
+const ApprovalsController = () => import('#controllers/dashboard/leave/approvals_controller')
+const LiabilityController = () =>
+  import('#controllers/dashboard/liabilities/liabilities_controller')
+const PeopleController = () => import('#controllers/dashboard/people/index_controller')
 const HealthChecksController = () => import('#controllers/health_checks_controller')
+const IndexDashboardController = () => import('#controllers/dashboard/index_controller')
 
 router.get('/health', [HealthChecksController])
 
@@ -125,3 +127,8 @@ router
     router.get('/dashboard/people/:id', [PeopleController, 'show']).as('dashboard.people.show')
   })
   .use([middleware.auth(), middleware.role([Role.HR, Role.CEO])])
+
+router
+  .get('/dashboard', [IndexDashboardController, 'handle'])
+  .as('dashboard.index')
+  .use(middleware.auth())

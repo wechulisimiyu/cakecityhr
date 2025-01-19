@@ -43,7 +43,7 @@
 
             <!-- Navigation Menu -->
             <div
-              class="top-0 left-0 items-start hidden w-full h-full p-4 text-sm bg-gray-900 bg-opacity-50 md:items-center md:w-3/4 md:absolute lg:text-base md:bg-transparent md:p-0 md:relative md:flex"
+              class="top-0 left-0 items-start hidden w-full h-full p-4 text-sm bg-gray-900 bg-opacity-50 md:items-center md:w-3/4 md:relative lg:text-base md:bg-transparent md:p-0 md:flex"
               :class="{'flex fixed': showMenu, 'hidden': !showMenu }"
             >
               <div
@@ -65,23 +65,9 @@
 
                   @if (await auth.check() && auth.user.roleId !== Role.EMPLOYEE)
                     <a
-                      href="{{ route('/approvals') }}"
+                      href="{{ route('/dashboard') }}"
                       class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center"
-                    >Leave Approvals</a>
-                  @endif
-                    
-                  @if (await auth.check() && (auth.user.roleId === Role.HR || auth.user.roleId === Role.CEO))
-                    <a
-                      href="{{ route('/dashboard/liability') }}"
-                      class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center"
-                    >Liability</a>
-                  @endif
-                  
-                  @if (await auth.check() && (auth.user.roleId === Role.HR || auth.user.roleId === Role.CEO))
-                    <a
-                      href="{{ route('/dashboard/people') }}"
-                      class="inline-block w-full py-2 mx-0 font-medium text-left text-gray-700 md:w-auto md:px-0 md:mx-2 hover:text-black lg:mx-3 md:text-center"
-                    >People</a>
+                    >Dashboard</a>
                   @endif
                 </div>
 
