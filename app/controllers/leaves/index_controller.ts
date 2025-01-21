@@ -135,32 +135,32 @@ export default class IndexController {
     }
   }
 
-  // async calendar({ view }: HttpContext) {
-  //   const leaves = await Leave.query()
-  //     .where('status', LeaveStatus.APPROVED)
-  //     .preload('user')
-  //     .orderBy('start_date', 'asc')
+  async calendar({ view }: HttpContext) {
+    const leaves = await Leave.query()
+      .where('status', LeaveStatus.APPROVED)
+      .preload('user')
+      .orderBy('start_date', 'asc')
 
-  //   const events = leaves.map((leave) => ({
-  //     id: leave.id,
-  //     title: `${leave.user.fullName} - ${leave.type}`,
-  //     start: leave.startDate.toFormat('yyyy-MM-dd'),
-  //     end: leave.endDate.plus({ days: 1 }).toFormat('yyyy-MM-dd'),
-  //     className: this.getLeaveTypeColor(leave.type),
-  //   }))
+    const events = leaves.map((leave) => ({
+      id: leave.id.toString(),
+      title: `${leave.user.fullName} - ${leave.type}`,
+      start: leave.startDate.toFormat('yyyy-MM-dd'),
+      end: leave.endDate.plus({ days: 1 }).toFormat('yyyy-MM-dd'),
+      classNames: this.getLeaveTypeColor(leave.type as LeaveType),
+    }))
 
-  //   return view.render('pages/leaves/calendar', { events })
-  // }
+    return view.render('pages/leaves/calendar', { events })
+  }
 
-  // private getLeaveTypeColor(type: LeaveType): string {
-  //   const colors = {
-  //     [LeaveType.ANNUAL]: 'bg-green-200 text-green-800',
-  //     [LeaveType.SICK]: 'bg-blue-200 text-blue-800',
-  //     [LeaveType.MATERNITY]: 'bg-pink-200 text-pink-800',
-  //     [LeaveType.PATERNITY]: 'bg-purple-200 text-purple-800',
-  //     [LeaveType.COMPASSIONATE]: 'bg-yellow-200 text-yellow-800',
-  //     [LeaveType.UNPAID]: 'bg-gray-200 text-gray-800',
-  //   }
-  //   return colors[type] || 'bg-gray-200 text-gray-800'
-  // }
+  private getLeaveTypeColor(type: LeaveType): string {
+    const colors: Record<LeaveType, string> = {
+      [LeaveType.ANNUAL]: 'bg-green-200 text-green-800',
+      [LeaveType.SICK]: 'bg-blue-200 text-blue-800',
+      [LeaveType.MATERNITY]: 'bg-pink-200 text-pink-800',
+      [LeaveType.PATERNITY]: 'bg-purple-200 text-purple-800',
+      [LeaveType.COMPASSIONATE]: 'bg-yellow-200 text-yellow-800',
+      [LeaveType.UNPAID]: 'bg-gray-200 text-gray-800',
+    }
+    return colors[type]
+  }
 }

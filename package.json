@@ -37,6 +37,8 @@
     "@adonisjs/eslint-config": "^2.0.0-beta.6",
     "@adonisjs/prettier-config": "^1.4.0",
     "@adonisjs/tsconfig": "^1.4.0",
+    "@event-calendar/core": "^3.8.0",
+    "@event-calendar/day-grid": "^3.8.0",
     "@japa/assert": "^3.0.0",
     "@japa/plugin-adonisjs": "^3.0.1",
     "@japa/runner": "^3.1.4",
@@ -71,6 +73,7 @@
     "edge-iconify": "^2.0.1",
     "edge.js": "^6.2.0",
     "fullcalendar": "^6.1.15",
+    "jspdf": "^2.5.2",
     "luxon": "^3.5.0",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2"

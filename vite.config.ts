@@ -18,5 +18,13 @@ export default defineConfig({
       reload: ['resources/views/**/*.edge'],
     }),
   ],
-  css: { postcss: { plugins: [tailwind(), autoprefixer()] } },
+  optimizeDeps: {
+    include: ['@event-calendar/core', '@event-calendar/day-grid'],
+  },
+  css: {
+    postcss: { plugins: [tailwind(), autoprefixer()] },
+    preprocessorOptions: {
+      css: { additionalData: '' },
+    },
+  },
 })

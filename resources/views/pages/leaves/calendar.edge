@@ -1,13 +1,45 @@
+{{-- filepath: resources/views/pages/leaves/calendar.edge --}}
 @layout({ title: 'Leave Calendar' })
   @card({
-    title: 'Leave Calendar',
-    description: 'View approved leave schedule'
+    title: 'Leave Calendar', 
+    description: 'Company-wide leave schedule'
   })
-    <div id="calendar" class="mt-4" style="min-height: 600px"></div>
+    <div class="mb-4">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 rounded-full bg-green-200"></div>
+          <span class="text-sm text-gray-600">Annual</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 rounded-full bg-blue-200"></div>
+          <span class="text-sm text-gray-600">Sick</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 rounded-full bg-pink-200"></div>
+          <span class="text-sm text-gray-600">Maternity</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 rounded-full bg-purple-200"></div>
+          <span class="text-sm text-gray-600">Paternity</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 rounded-full bg-yellow-200"></div>
+          <span class="text-sm text-gray-600">Compassionate</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-3 h-3 rounded-full bg-gray-200"></div>
+          <span class="text-sm text-gray-600">Unpaid</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="calendar"></div>
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        window.initCalendar({{ JSON.stringify(events) }})
+      document.addEventListener('DOMContentLoaded', function() {
+        let events = {{{ JSON.stringify(events) }}}
+        console.log('Events:', events)
+        window.initCalendar(events)
       })
     </script>
   @end

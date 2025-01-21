@@ -10,6 +10,38 @@
       </p>
     </div>
 
+    {{-- Quick Actions --}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 place-items-center">
+      @button({
+          href: route('leaves.create'),
+          type: 'submit',
+          variant: 'green',
+          class: 'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors hover:scale-105 transform duration-200 shadow-lg hover:shadow-xl'
+      })
+        @!svg('ph:plus-circle', { class: 'size-5' })
+        <span>Apply for Leave</span>
+      @end
+          
+      @button({
+          href: route('leaves.index'),
+          type: 'button',
+          variant: 'ghost',
+          class: 'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-2 hover:border-primary-600 hover:bg-primary-50 hover:scale-105 transform duration-200 shadow-md hover:shadow-lg'
+      })
+        @!svg('ph:clock-clockwise', { class: 'size-5' })
+        <span>View Your Applications</span>
+      @end
+          
+      {{-- @button({
+          href: route('/calendar'),
+          variant: 'ghost',
+          class: 'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-2 hover:border-primary-600 hover:bg-primary-50 hover:scale-105 transform duration-200 shadow-md hover:shadow-lg'
+          })
+          @!svg('ph:calendar', { class: 'size-5' })
+          <span>Leave Calendar</span>
+      @end --}}
+    </div>
+
     {{-- Leave Policies --}}
     <div class="bg-white p-6 rounded-xl shadow">
       <h2 class="text-xl font-semibold text-gray-900 mb-4">
@@ -120,36 +152,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    {{-- Quick Actions --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-      @button({
-      href: route('leaves.create'),
-      variant: 'green',
-      class: 'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors hover:scale-105 transform duration-200 shadow-lg hover:shadow-xl'
-      })
-      @!svg('ph:plus-circle', { class: 'size-5' })
-      <span>Apply for Leave</span>
-      @end
-      
-      @button({
-      href: route('leaves.index'),
-      variant: 'ghost',
-      class: 'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-2 hover:border-primary-600 hover:bg-primary-50 hover:scale-105 transform duration-200 shadow-md hover:shadow-lg'
-      })
-      @!svg('ph:clock-clockwise', { class: 'size-5' })
-      <span>View Applications</span>
-      @end
-      
-      @button({
-      href: route('/'),
-      variant: 'ghost',
-      class: 'w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors border-2 hover:border-primary-600 hover:bg-primary-50 hover:scale-105 transform duration-200 shadow-md hover:shadow-lg'
-      })
-      @!svg('ph:calendar', { class: 'size-5' })
-      <span>Leave Calendar</span>
-      @end
     </div>
 
     {{-- Contact Information --}}

@@ -92,6 +92,7 @@ router
     router.get('/leave/create', [IndexLeaveController, 'create']).as('leaves.create')
     router.post('/leave', [IndexLeaveController, 'store']).as('leaves.store')
     router.get('/leave/:id', [IndexLeaveController, 'show']).as('leaves.show')
+    router.get('/calendar', [IndexLeaveController, 'calendar']).as('leaves.calendar')
   })
   .use(middleware.auth()) // Protect all leave routes with auth
 
