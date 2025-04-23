@@ -24,7 +24,7 @@ export default defineConfig({
   css: {
     postcss: { plugins: [tailwind(), autoprefixer()] },
     preprocessorOptions: {
-      css: { additionalData: '' },
+      scss: { additionalData: '' }, // Changed from css to scss
     },
   },
 })

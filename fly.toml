@@ -1,0 +1,32 @@
+# fly.toml app configuration file generated for cakecityhr on 2025-04-23T11:45:13+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'cakecityhr'
+primary_region = 'jnb'
+
+[build]
+
+[env]
+  NODE_ENV = "production"
+  LOG_LEVEL = "info"
+  SESSION_DRIVER = "cookie"
+  PORT = "3333"
+  HOST = "0.0.0.0"
+
+[deploy]
+  release_command = "node ace migration:run --force"
+
+[http_service]
+  internal_port = 3333
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1

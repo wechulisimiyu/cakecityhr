@@ -103,7 +103,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
     await db.transaction(async (trx) => {
       this.useTransaction(trx)
 
-      await this.merge({ email: data.email }).save()
+      // Fix the email property type issue
+      await this.merge({ email: data.email } as any).save()
       await EmailHistory.create(
         {
           userId: this.id,
