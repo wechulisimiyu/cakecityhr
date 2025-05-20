@@ -45,4 +45,3 @@ ENV HOST="0.0.0.0" \
 EXPOSE 3333
 
 # Start the server from the correct location
-CMD ["node", "bin/server.js"]
