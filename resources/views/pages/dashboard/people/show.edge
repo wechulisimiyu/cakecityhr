@@ -1,48 +1,53 @@
 @layout({ title: user ? `${user.fullName} - Profile` : 'Employee Profile' })
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="min-h-screen bg-gradient-to-br from-pink-50 via-yellow-50 to-white py-8">
+  <div class="max-w-3xl mx-auto space-y-8 px-2 sm:px-4">
     @if(user)
-      {{-- Employee Details --}}
-      <div class="bg-white shadow rounded-lg mb-6">
-        <div class="px-4 py-5 sm:p-6">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Employee Information</h3>
+      <div class="bg-white/90 rounded-2xl shadow-xl border border-blue-100 mb-6">
+        <div class="px-6 py-6">
+          <h3 class="text-xl font-bold text-blue-700 flex items-center gap-2">
+            @!svg('ph:user', { class: 'size-6 text-blue-400' })
+            Employee Information
+          </h3>
           <div class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
             <div>
               <h4 class="text-sm font-medium text-gray-500">Full Name</h4>
-              <p class="mt-1 text-sm text-gray-900">{{ user.fullName }}</p>
+              <p class="mt-1 text-base text-gray-900">{{ user.fullName }}</p>
             </div>
             <div>
               <h4 class="text-sm font-medium text-gray-500">Department</h4>
-              <p class="mt-1 text-sm text-gray-900">{{ user.department?.name ?? 'Not Assigned' }}</p>
+              <p class="mt-1 text-base text-gray-900">{{ user.department?.name ?? 'Not Assigned' }}</p>
             </div>
           </div>
         </div>
       </div>
-
-      {{-- Leave Statistics --}}
-      <div class="bg-white shadow rounded-lg mb-6">
-        <div class="px-4 py-5 sm:p-6">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Leave Statistics ({{ currentYear }})</h3>
+      <div class="bg-white/90 rounded-2xl shadow-xl border border-blue-100 mb-6">
+        <div class="px-6 py-6">
+          <h3 class="text-xl font-bold text-blue-700 flex items-center gap-2">
+            @!svg('ph:chart-bar', { class: 'size-6 text-blue-400' })
+            Leave Statistics ({{ currentYear }})
+          </h3>
           <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <div class="px-4 py-5 bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6">
+            <div class="px-4 py-5 bg-blue-50 shadow rounded-lg overflow-hidden sm:p-6">
               <dt class="text-sm font-medium text-gray-500 truncate">Total Applications</dt>
               <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ leaveStats.total }}</dd>
             </div>
-            <div class="px-4 py-5 bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6">
+            <div class="px-4 py-5 bg-blue-50 shadow rounded-lg overflow-hidden sm:p-6">
               <dt class="text-sm font-medium text-gray-500 truncate">Annual Leave</dt>
               <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ leaveStats.annual }}</dd>
             </div>
-            <div class="px-4 py-5 bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6">
+            <div class="px-4 py-5 bg-blue-50 shadow rounded-lg overflow-hidden sm:p-6">
               <dt class="text-sm font-medium text-gray-500 truncate">Sick Leave</dt>
               <dd class="mt-1 text-3xl font-semibold text-gray-900">{{ leaveStats.sick }}</dd>
             </div>
           </dl>
         </div>
       </div>
-
-      {{-- Leave History --}}
-      <div class="bg-white shadow rounded-lg">
-        <div class="px-4 py-5 sm:p-6">
-          <h3 class="text-lg font-medium leading-6 text-gray-900">Leave History</h3>
+      <div class="bg-white/90 rounded-2xl shadow-xl border border-blue-100">
+        <div class="px-6 py-6">
+          <h3 class="text-xl font-bold text-blue-700 flex items-center gap-2">
+            @!svg('ph:clock-counter-clockwise', { class: 'size-6 text-blue-400' })
+            Leave History
+          </h3>
           @if(leaves.length)
             <div class="mt-5">
               {{-- Leave list items --}}
@@ -55,10 +60,12 @@
     @else
       <div class="text-center py-12">
         <h3 class="text-lg font-medium text-gray-900">{{ error }}</h3>
-        @button({ href: route('dashboard.people.index'), variant: 'ghost' })
+        @button({ href: route('dashboard.people.index'), class: 'inline-flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-xl bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-200' })
+          @!svg('ph:arrow-left', { class: 'size-4' })
           Back to Directory
         @end
       </div>
     @end
   </div>
+</div>
 @end

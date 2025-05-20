@@ -1,49 +1,53 @@
 @layout({ title: 'Employee Leave Liability' })
-  <div class="container mx-auto px-4 py-8">
-    <div class="mb-6 flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Employee Leave Liability Details</h1>
-      <a href="{{ route('dashboard.liability.department', [employeeLiability.departmentId]) }}" 
-         class="text-blue-600 hover:underline">
-        ← Back to Department
-      </a>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {{-- Employee Info --}}
-      <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-xl font-semibold mb-4">Employee Information</h2>
-        <dl class="space-y-2">
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Name</dt>
-            <dd class="mt-1">{{ employeeLiability.employeeName }}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Department</dt>
-            <dd class="mt-1">{{ employeeLiability.departmentName }}</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Daily Rate</dt>
-            <dd class="mt-1">KES{{ employeeLiability.dailyRate.toFixed(2) }}</dd>
-          </div>
-        </dl>
+<div class="min-h-screen bg-gradient-to-br from-pink-50 via-yellow-50 to-white py-8">
+  <div class="max-w-3xl mx-auto space-y-8 px-2 sm:px-4">
+    <div class="bg-white/90 rounded-2xl shadow-xl border border-yellow-100 p-6 sm:p-8">
+      <div class="mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <h1 class="text-2xl font-bold text-pink-700 flex items-center gap-2">
+          @!svg('ph:user', { class: 'size-7 text-pink-400' })
+          Employee Leave Liability Details
+        </h1>
+        <a href="{{ route('dashboard.liability.department', [employeeLiability.departmentId]) }}"
+           class="inline-flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-xl bg-gradient-to-r from-yellow-400 to-pink-400 text-white shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-200">
+          @!svg('ph:arrow-left', { class: 'size-4' })
+          Back to Department
+        </a>
       </div>
-
-      {{-- Leave Balance --}}
-      <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-xl font-semibold mb-4">Leave Balance</h2>
-        <dl class="space-y-2">
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Annual Leave Balance</dt>
-            <dd class="mt-1">{{ employeeLiability.annualLeaveBalance }} days</dd>
-          </div>
-          <div>
-            <dt class="text-sm font-medium text-gray-500">Total Liability</dt>
-            <dd class="mt-1 text-lg font-semibold">
-              KES{{ employeeLiability.totalLiability.toFixed(2) }}
-            </dd>
-          </div>
-        </dl>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-gradient-to-br from-yellow-50 to-white border-l-4 border-yellow-400 rounded-xl p-6">
+          <h2 class="text-lg font-semibold text-yellow-700 mb-4">Employee Information</h2>
+          <dl class="space-y-2">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Name</dt>
+              <dd class="mt-1">{{ employeeLiability.employeeName }}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Department</dt>
+              <dd class="mt-1">{{ employeeLiability.departmentName }}</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Daily Rate</dt>
+              <dd class="mt-1">KES{{ employeeLiability.dailyRate.toFixed(2) }}</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="bg-gradient-to-br from-pink-50 to-white border-l-4 border-pink-400 rounded-xl p-6">
+          <h2 class="text-lg font-semibold text-pink-700 mb-4">Leave Balance</h2>
+          <dl class="space-y-2">
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Annual Leave Balance</dt>
+              <dd class="mt-1">{{ employeeLiability.annualLeaveBalance }} days</dd>
+            </div>
+            <div>
+              <dt class="text-sm font-medium text-gray-500">Total Liability</dt>
+              <dd class="mt-1 text-lg font-semibold text-pink-700">
+                KES{{ employeeLiability.totalLiability.toFixed(2) }}
+              </dd>
+            </div>
+          </dl>
+        </div>
       </div>
     </div>
   </div>
+</div>
 @end

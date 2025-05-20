@@ -1,120 +1,111 @@
 @layout({ title: 'People Directory' })
-  <div class="container mx-auto px-4 py-8">
-    {{-- Header with Stats --}}
-    <div class="mb-8">
-      <h1 class="text-2xl font-bold text-gray-900">
-        People Directory
-      </h1>
-      <p class="mt-2 text-sm text-gray-600">
-        Managing {{ totalEmployees }} people across {{ departments.length }} departments
-      </p>
-    </div>
-
-    {{-- Search and Filters --}}
-    <div class="mb-8">
-      @form({ method: 'get', class: 'flex items-center gap-4' })
-        <div class="flex-1">
-          @!form.input({
-            name: 'query',
-            value: query,
-            placeholder: 'Search by name...',
-            class: 'w-full py-2.5 px-4 text-base'
-          })
-        </div>
-        <div class="w-48">
-          @!form.select({
-            name: 'department',
-            value: departmentFilter,
-            options: departments.map(d => ({ label: d.name, value: d.id })),
-            placeholder: 'All Departments',
-            class: 'h-[42px] text-base'
-          })
-        </div>
-        @button({
-          type: 'submit',
-          
-        })
-          Search
-        @end
-      @end
-    </div>
-
-    {{-- Management Team --}}
-    <div class="mb-8">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold">
-          Management Team
-        </h2>
-        <span class="text-sm text-gray-500">{{ specialUsers.length }} members</span>
+<div class="min-h-screen bg-gradient-to-br from-pink-50 via-yellow-50 to-white py-8">
+  <div class="max-w-6xl mx-auto space-y-8 px-2 sm:px-4">
+    <div class="bg-white/90 rounded-2xl shadow-xl border border-blue-100 p-6 sm:p-8">
+      <div class="mb-8">
+        <h1 class="text-2xl font-bold text-blue-700 flex items-center gap-2">
+          @!svg('ph:users', { class: 'size-7 text-blue-400' })
+          People Directory
+        </h1>
+        <p class="mt-2 text-sm text-gray-600">Managing {{ totalEmployees }} people across {{ departments.length }} departments</p>
       </div>
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div class="divide-y divide-gray-200">
-          @each(user in specialUsers)
-            <div class="p-4 hover:bg-gray-50 transition duration-150">
-              <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-                    <span class="text-sm font-medium">{{ user.fullName.charAt(0) }}</span>
-                  </div>
-                  <div>
-                    <h3 class="text-base font-medium">
-                      {{ user.fullName }}
-                    </h3>
-                    <p class="text-sm text-gray-500">
-                      {{ getRoleName(user.roleId) }}
-                    </p>
-                  </div>
-                </div>
-                @button({ href: route('dashboard.people.show', [user.id]), variant: 'ghost' })
-                  View Profile
-                @end
-              </div>
-            </div>
+      <div class="mb-8">
+        @form({ method: 'get', class: 'flex flex-col sm:flex-row items-center gap-4' })
+          <div class="flex-1 w-full">
+            @!form.input({
+              name: 'query',
+              value: query,
+              placeholder: 'Search by name...',
+              class: 'w-full py-2.5 px-4 text-base rounded-lg border-gray-300 focus:ring-blue-400 focus:border-blue-400'
+            })
+          </div>
+          <div class="w-full sm:w-48">
+            @!form.select({
+              name: 'department',
+              value: departmentFilter,
+              options: departments.map(d => ({ label: d.name, value: d.id })),
+              placeholder: 'All Departments',
+              class: 'h-[42px] text-base rounded-lg border-gray-300 focus:ring-blue-400 focus:border-blue-400'
+            })
+          </div>
+          @button({
+            type: 'submit',
+            class: 'w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold rounded-xl bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-200',
+          })
+            @!svg('ph:magnifying-glass', { class: 'size-5' })
+            Search
           @end
-        </div>
+        @end
       </div>
-    </div>
-
-    {{-- Departments --}}
-    @each(department in departments)
       <div class="mb-8">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold">
-            {{ department.name }}
+          <h2 class="text-lg font-semibold text-blue-700 flex items-center gap-2">
+            @!svg('ph:star', { class: 'size-5 text-yellow-400' })
+            Management Team
           </h2>
-          <span class="text-sm text-gray-500">{{ department.employees.length }} members</span>
+          <span class="text-sm text-gray-500">{{ specialUsers.length }} members</span>
         </div>
         <div class="bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="divide-y divide-gray-200">
-            @each(employee in department.employees)
-              <div class="p-4 hover:bg-gray-50 transition duration-150">
+            @each(user in specialUsers)
+              <div class="p-4 hover:bg-blue-50 transition duration-150">
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center">
-                      <span class="text-sm font-medium">{{ employee.fullName.charAt(0) }}</span>
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                      <span class="text-base font-bold text-blue-700">{{ user.fullName.charAt(0) }}</span>
                     </div>
                     <div>
-                      <h3 class="text-base font-medium">
-                        {{ employee.fullName }}
-                      </h3>
-                      <p class="text-sm text-gray-500">
-                        {{ getRoleName(employee.roleId) }}
-                      </p>
+                      <h3 class="text-base font-medium text-gray-900">{{ user.fullName }}</h3>
+                      <p class="text-sm text-gray-500">{{ getRoleName(user.roleId) }}</p>
                     </div>
                   </div>
-                  @button({ href: route('dashboard.people.show', [employee.id]), variant: 'ghost' })
+                  @button({ href: route('dashboard.people.show', [user.id]), class: 'inline-flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-xl bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-200' })
+                    @!svg('ph:user', { class: 'size-4' })
                     View Profile
                   @end
                 </div>
-              </div>
-            @else
-              <div class="p-8 text-center text-gray-500">
-                No employees found in this department
               </div>
             @end
           </div>
         </div>
       </div>
-    @end
+      @each(department in departments)
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-semibold text-blue-700 flex items-center gap-2">
+              @!svg('ph:users-three', { class: 'size-5 text-blue-400' })
+              {{ department.name }}
+            </h2>
+            <span class="text-sm text-gray-500">{{ department.employees.length }} members</span>
+          </div>
+          <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="divide-y divide-gray-200">
+              @each(employee in department.employees)
+                <div class="p-4 hover:bg-blue-50 transition duration-150">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                        <span class="text-base font-bold text-blue-700">{{ employee.fullName.charAt(0) }}</span>
+                      </div>
+                      <div>
+                        <h3 class="text-base font-medium text-gray-900">{{ employee.fullName }}</h3>
+                        <p class="text-sm text-gray-500">{{ getRoleName(employee.roleId) }}</p>
+                      </div>
+                    </div>
+                    @button({ href: route('dashboard.people.show', [employee.id]), class: 'inline-flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-xl bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-200' })
+                      @!svg('ph:user', { class: 'size-4' })
+                      View Profile
+                    @end
+                  </div>
+                </div>
+              @else
+                <div class="p-8 text-center text-gray-500">No employees found in this department</div>
+              @end
+            </div>
+          </div>
+        </div>
+      @end
+    </div>
   </div>
+</div>
 @end

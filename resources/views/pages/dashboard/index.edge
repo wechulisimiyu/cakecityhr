@@ -1,125 +1,92 @@
 @layout({ title: 'Dashboard' })
-  @card({
-    title: 'Dashboard Overview',
-    description: 'Key metrics and statistics'
-  })
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="min-h-screen bg-gradient-to-br from-pink-50 via-yellow-50 to-white py-8">
+  <div class="max-w-7xl mx-auto space-y-8 px-2 sm:px-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {{-- Total Employees Card --}}
       @if(auth.user.roleId === Role.HR || auth.user.roleId === Role.CEO)
-        <div class="bg-white p-6 rounded-lg border border-gray-200">
-          <div class="flex flex-col h-full">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <p class="text-sm font-medium text-gray-600">
-                  Total Employees
-                </p>
-                <p class="mt-2 text-3xl font-bold text-gray-900">
-                  {{ stats.totalEmployees }}
-                </p>
-              </div>
-              <div class="bg-blue-100 rounded-full p-3">
-                @!svg('ph:users', { class: 'size-6 text-blue-600' })
-              </div>
-            </div>
-            @if(auth.user.roleId === Role.HR || auth.user.roleId === Role.CEO)
-              @button({ href: route('dashboard.people.index'), variant: 'ghost', class: 'w-full mt-auto border-blue-200 hover:bg-blue-50 hover:border-blue-300' })
-                View Directory
-              @end
-            @endif
-          </div>
-        </div>
-      @endif
-      
-      {{-- Total Departments Card --}}
-      @if(auth.user.roleId === Role.HR || auth.user.roleId === Role.CEO)
-        <div class="bg-white p-6 rounded-lg border border-gray-200">
-          <div class="flex flex-col h-full">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <p class="text-sm font-medium text-gray-600">
-                  Departments
-                </p>
-                <p class="mt-2 text-3xl font-bold text-gray-900">
-                  {{ stats.totalDepartments }}
-                </p>
-              </div>
-              <div class="bg-purple-100 rounded-full p-3">
-                @!svg('ph:buildings', { class: 'size-6 text-purple-600' })
-              </div>
-            </div>
-          </div>
-        </div>
-      @endif
-      
-      {{-- Liability overview Card --}}
-      @if(auth.user.roleId === Role.HR || auth.user.roleId === Role.CEO)
-        <div class="bg-white p-6 rounded-lg border border-gray-200">
-          <div class="flex flex-col h-full">
-            <div class="flex justify-between items-start mb-4">
-              <div>
-                <p class="text-sm font-medium text-gray-600">
-                  Leave Liability
-                </p>
-                <p class="mt-2 text-3xl font-bold text-gray-900">
-                  {{ stats.totalLiability ?? 0 }}
-                </p>
-              </div>
-              <div class="bg-red-100 rounded-full p-3">
-                @!svg('ph:bank', { class: 'size-6 text-red-600' })
-              </div>
-            </div>
-            @button({ href: route('dashboard.liability.index'), variant: 'ghost', class: 'w-full mt-auto border-red-200 hover:bg-red-50 hover:border-red-300' })
-              View Liability
-            @end
-          </div>
-        </div>
-      @endif
-      
-      {{-- Active Leaves Card --}}
-      <div class="bg-white p-6 rounded-lg border border-gray-200">
-        <div class="flex flex-col h-full">
-          <div class="flex justify-between items-start mb-4">
+        <div class="bg-white/90 rounded-2xl shadow-xl border border-blue-100 p-6 flex flex-col h-full">
+          <div class="flex justify-between items-center mb-4">
             <div>
-              <p class="text-sm font-medium text-gray-600">
-                Active Leaves
-              </p>
-              <p class="mt-2 text-3xl font-bold text-gray-900">
-                {{ stats.activeLeaves }}
-              </p>
+              <p class="text-sm font-medium text-blue-700">Total Employees</p>
+              <p class="mt-2 text-3xl font-bold text-gray-900">{{ stats.totalEmployees }}</p>
             </div>
-            <div class="bg-green-100 rounded-full p-3">
-              @!svg('ph:calendar-check', { class: 'size-6 text-green-600' })
+            <div class="bg-blue-100 rounded-full p-3">
+              @!svg('ph:users', { class: 'size-6 text-blue-600' })
             </div>
           </div>
-          @button({ href: route('leaves.index'), variant: 'ghost', class: 'w-full mt-auto border-green-200 hover:bg-green-50 hover:border-green-300' })
-            View Leaves
+          @button({ href: route('dashboard.people.index'), class: 'w-full mt-auto flex items-center justify-center gap-2 px-4 py-2 text-base font-semibold rounded-xl bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-200' })
+            @!svg('ph:address-book', { class: 'size-5' })
+            View Directory
           @end
         </div>
-      </div>
-
-      {{-- Pending Approvals Card --}}
-      <div class="bg-white p-6 rounded-lg border border-gray-200">
-        <div class="flex flex-col h-full">
-          <div class="flex justify-between items-start mb-4">
+      @endif
+      {{-- Total Departments Card --}}
+      @if(auth.user.roleId === Role.HR || auth.user.roleId === Role.CEO)
+        <div class="bg-white/90 rounded-2xl shadow-xl border border-purple-100 p-6 flex flex-col h-full">
+          <div class="flex justify-between items-center mb-4">
             <div>
-              <p class="text-sm font-medium text-gray-600">
-                Pending Approvals
-              </p>
-              <p class="mt-2 text-3xl font-bold text-gray-900">
-                {{ stats.pendingApprovals }}
-              </p>
+              <p class="text-sm font-medium text-purple-700">Departments</p>
+              <p class="mt-2 text-3xl font-bold text-gray-900">{{ stats.totalDepartments }}</p>
             </div>
-            <div class="bg-yellow-100 rounded-full p-3">
-              @!svg('ph:clock', { class: 'size-6 text-yellow-600' })
+            <div class="bg-purple-100 rounded-full p-3">
+              @!svg('ph:buildings', { class: 'size-6 text-purple-600' })
             </div>
           </div>
-          @if(auth.user.roleId !== Role.EMPLOYEE)
-            @button({ href: route('approvals.index'), variant: 'ghost', class: 'w-full mt-auto border-yellow-200 hover:bg-yellow-50 hover:border-yellow-300' })
-              View Approvals
-            @end
-          @endif
         </div>
+      @endif
+      {{-- Liability overview Card --}}
+      @if(auth.user.roleId === Role.HR || auth.user.roleId === Role.CEO)
+        <div class="bg-white/90 rounded-2xl shadow-xl border border-red-100 p-6 flex flex-col h-full">
+          <div class="flex justify-between items-center mb-4">
+            <div>
+              <p class="text-sm font-medium text-red-700">Leave Liability</p>
+              <p class="mt-2 text-3xl font-bold text-gray-900">{{ stats.totalLiability ?? 0 }}</p>
+            </div>
+            <div class="bg-red-100 rounded-full p-3">
+              @!svg('ph:bank', { class: 'size-6 text-red-600' })
+            </div>
+          </div>
+          @button({ href: route('dashboard.liability.index'), class: 'w-full mt-auto flex items-center justify-center gap-2 px-4 py-2 text-base font-semibold rounded-xl bg-gradient-to-r from-red-400 to-yellow-400 text-white shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-200' })
+            @!svg('ph:bank', { class: 'size-5' })
+            View Liability
+          @end
+        </div>
+      @endif
+      {{-- Active Leaves Card --}}
+      <div class="bg-white/90 rounded-2xl shadow-xl border border-green-100 p-6 flex flex-col h-full">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <p class="text-sm font-medium text-green-700">Active Leaves</p>
+            <p class="mt-2 text-3xl font-bold text-gray-900">{{ stats.activeLeaves }}</p>
+          </div>
+          <div class="bg-green-100 rounded-full p-3">
+            @!svg('ph:calendar-check', { class: 'size-6 text-green-600' })
+          </div>
+        </div>
+        @button({ href: route('leaves.index'), class: 'w-full mt-auto flex items-center justify-center gap-2 px-4 py-2 text-base font-semibold rounded-xl bg-gradient-to-r from-green-400 to-green-600 text-white shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-200' })
+          @!svg('ph:calendar', { class: 'size-5' })
+          View Leaves
+        @end
+      </div>
+      {{-- Pending Approvals Card --}}
+      <div class="bg-white/90 rounded-2xl shadow-xl border border-yellow-100 p-6 flex flex-col h-full">
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <p class="text-sm font-medium text-yellow-700">Pending Approvals</p>
+            <p class="mt-2 text-3xl font-bold text-gray-900">{{ stats.pendingApprovals }}</p>
+          </div>
+          <div class="bg-yellow-100 rounded-full p-3">
+            @!svg('ph:clock', { class: 'size-6 text-yellow-600' })
+          </div>
+        </div>
+        @if(auth.user.roleId !== Role.EMPLOYEE)
+          @button({ href: route('approvals.index'), class: 'w-full mt-auto flex items-center justify-center gap-2 px-4 py-2 text-base font-semibold rounded-xl bg-gradient-to-r from-yellow-400 to-pink-400 text-white shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-200' })
+            @!svg('ph:clipboard-text', { class: 'size-5' })
+            View Approvals
+          @end
+        @endif
       </div>
     </div>
-  @end
+  </div>
+</div>
 @end
